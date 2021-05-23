@@ -1,0 +1,80 @@
+﻿@model taka.Models.Enitities.USER
+
+@{
+    List<taka.Models.Enitities.ORDER> processingOrders = ViewBag.ProcessingOrders;
+    List<taka.Models.Enitities.ORDER> doneOrders = ViewBag.DoneOrders;
+    List<taka.Models.Enitities.ADDRESS> addresses = ViewBag.Addresses;
+
+    ViewBag.Title = "Takasa";
+    Layout = "~/Views/User/_LayoutUser.cshtml";
+}
+
+<div style="flex:1;background-color:#f5f5f5;padding:10px;border-radius:10px">
+    <div style="display:flex;flex:1">
+        <div class="list-group" id="list-tab" style="flex-direction: row;flex:1" role="tablist">
+            <a class="btn m-1 pl-5 pr-5 btn-light active show" style="flex:1" id="tab_login" data-toggle="list" href="#processing" role="tab">
+                Chưa giao
+                <span class="badge badge-primary badge-pill" style="background-color:#ee4d2d;">@processingOrders.Count</span>
+            </a>
+            <a class="btn m-1 pl-5 pr-5 btn-light" id="tab_register" style="flex:1" data-toggle="list" href="#deliveried" role="tab">
+                Đã giao
+
+            </a>
+        </div>
+    </div>
+    <div style="display:flex;flex:1;">
+        <div class="tab-content" style="flex:1;" id="nav-tabContent">
+            <div class="tab-pane fade active show" id="processing" role="tabpanel">
+
+                <ul class="list-group">
+                    @foreach (var item in processingOrders)
+                    {
+
+                        <li class="list-group-item list-group-item-action" data-toggle="collapse" data-target=".detail_@item.ID">
+                            <h5>@item.CLIENT_NAME</h5>
+                            <strong>@item.SHIPPER</strong>
+                            <p>@addresses.Where(x => x.ID == item.ID_ADDRESS).ToList().First().ADDRESS1</p>
+                            <h6 class="text-right" style="color:#ee2d4d;">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.TOTAL_PRICE) VND</h6>
+                        </li>
+                        foreach (var tea in item.ORDER_DETAIL.ToList())
+                        {
+                            <li class="list-group-item list-group-item-action collapse detail_@item.ID">
+                                <img src="@tea.TEA.IMAGEs.First().URL" style="width:80px; height:80px;" />
+                                <strong>@tea.TEA.TITLE</strong>
+
+                                <p align="right">Số lượng: @tea.AMOUNT</p>
+                            </li>
+
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="deliveried" role="tabpanel">
+
+                <ul class="list-group">
+                    @foreach (var item in doneOrders)
+                    {
+                        <li class="list-group-item list-group-item-action" data-toggle="collapse" data-target=".detail_@item.ID">
+                            <h5>@item.CLIENT_NAME</h5>
+                            <strong>@item.SHIPPER</strong>
+                            <p>@addresses.Where(x => x.ID == item.ID_ADDRESS).ToList().First().ADDRESS1</p>
+                            <h6 class="text-right" style="color:#ee2d4d;">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.TOTAL_PRICE) VND</h6>
+                        </li>
+
+                        foreach (var tea in item.ORDER_DETAIL.ToList())
+                        {
+                            <li class="list-group-item list-group-item-action collapse detail_@item.ID">
+                                <img src="@tea.TEA.IMAGEs.First().URL" style="width:80px; height:80px;" />
+                                <strong>@tea.TEA.TITLE</strong>
+
+                                <p align="right">Số lượng: @tea.AMOUNT</p>
+                            </li>
+
+                        }
+                    }
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+﻿@model taka.Models.Enitities.USER
+
+@{
+    ViewBag.Title = "Takasa";
+    Layout = "~/Views/User/_LayoutUser.cshtml";
+}
+
+<body>
+    <div class="user-page-brief">
+        <h3>Hồ Sơ Của Tôi</h3>
+    </div>
+    <div>
+        <table class="table" style="vertical-align:auto">
+            <tr>
+                <th>Họ Tên</th>
+                <td>@Model.FULLNAME</td>
+            </tr>
+            <tr>
+                <th>Ngày Sinh</th>
+                <td>
+                    @DateTime.Parse(@Model.BIRTHDAY).ToString("dd/MM/yyyy")
+                </td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>@Model.EMAIL</td>
+            </tr>
+            <tr>
+                <th>Số Điện Thoại</th>
+                <td>@Model.PHONE</td>
+            </tr>
+            <tr>
+                <th>Giới Tính</th>
+                <td>@Model.GENDER</td>
+            </tr>
+        </table>
+    </div>
+
+
+</body>
+

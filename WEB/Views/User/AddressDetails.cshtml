@@ -1,0 +1,64 @@
+﻿@model IEnumerable<taka.Models.Enitities.Address>
+
+@{
+    ViewBag.Title = "Takasa";
+    Layout = "~/Views/User/_LayoutUser.cshtml";
+}
+
+<body>
+    @RenderPage("~/Views/User/ModelDeleteAddress.cshtml")
+    <form action="/User/AddresDetails" method="post" role="form">
+        <div class="user-page-brief">
+            <div>
+                <h3> Danh Sách Địa Chỉ </h3>
+            </div>
+            <div style="margin-left:auto">
+                <a href="~/User/AddAddress" class="btn btn-light" style="background-color:#ee4d2d;color:white">
+                    Thêm Địa Chỉ Mới
+                </a>
+            </div>
+        </div>
+        <div style="margin:auto">
+            @foreach (var item in Model)
+            {
+                <div class="address-card">
+
+                    <div class="form-group">
+                        <div class="address-display__field-container address-display__field-container--name">
+                            <div class="address-display__field-label">Họ Và Tên</div>
+                            <div class="address-display__field-content">
+                                <span class="address-display__name-text">@item.Name</span>
+                            </div>
+                        </div>
+                        <div class="address-display__field-container">
+                            <div class="address-display__field-label">Số Điện Thoại</div>
+                            <div class="address-display__field-content">@item.Phone</div>
+                        </div>
+                        <div class="address-display__field-container address-display__field-container__address">
+                            <div class="address-display__field-label">Địa Chỉ</div>
+                            <div class="address-display__field-content">
+                                <span>@item.Address1</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="address-card__buttons">
+                        <div class="address-card__button-group">
+                            <a href="@Url.Action("EditAddress", "User", new { idAddress = item.ID})" class="bacc-secondary-action-btn"> Sửa </a>
+                            <button type="button" class="bacc-secondary-action-btn" onclick="deleteAddress('@item.ID')">
+                                Xóa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </form>
+</body>
+
+
+<script>
+    let deleteAddress = id => {
+        $('#idAddress').val(id)
+        $('#modalDelAddress').modal('show');
+    }
+</script>

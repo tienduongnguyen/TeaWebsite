@@ -1,0 +1,54 @@
+﻿@model taka.Models.Enitities.USER
+
+@{
+    ViewBag.Title = "Takasa";
+    Layout = "~/Views/User/_LayoutUser.cshtml";
+    string[] genders = new string[] {"Khác", "Nam", "Nữ" };
+}
+
+<body>
+    <form action="/User/EditUser" method="post" role="form">
+        <div class="user-page-brief">
+            <h3> Chỉnh Sửa Hồ Sơ </h3>
+        </div>
+        <div>
+            <table class="table" style="vertical-align:auto">
+                <tr>
+                    <th>Họ Và Tên</th>
+                    <td><input type="text" name="fullname" class="form-control" id="name" placeholder="Họ Và Tên" value="@Model.FULLNAME"></td>
+                </tr>
+                <tr>
+                    <th>Ngày Sinh</th>
+                    <td><input name="birthday" type="date" class="form-control" placeholder="Ngày sinh " value="@Model.BIRTHDAY" /></td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><input name="email" type="email" class="form-control" placeholder="Email " value="@Model.EMAIL" /></td>
+                </tr>
+                <tr>
+                    <th>Giới Tính</th>
+                    <td>
+                        <select name="gender" class="form-control">
+                            @foreach (var item in genders)
+                            {
+                                if (item.Equals(Model.GENDER))
+                                {
+                                    <option value="@item" selected>@item</option>
+                                }
+                                else
+                                {
+                                    <option value="@item">@item</option>
+                                }
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <input type="submit" class="btn btn-light" style="background-color:#ee4d2d;color:white" value="Cập Nhật" />
+            </div>
+        </div>
+
+    </form>
+</body>
+

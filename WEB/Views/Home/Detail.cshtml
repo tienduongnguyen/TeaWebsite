@@ -1,0 +1,219 @@
+﻿@model  taka.Models.Enitities.TEA
+
+@{
+    ViewBag.Title = Model.TITLE;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    taka.Models.Enitities.USER userInfo = (taka.Models.Enitities.USER)Session[taka.Utils.C.SESSION.UserInfo];
+}
+@RenderPage("~/Views/Shared/ModalDelete.cshtml")
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Home/List?cate=@Model.ID_CATEGORY">@Model.CATEGORY.NAME</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.TITLE</li>
+    </ol>
+</nav>
+
+<hr />
+<div class="row">
+    <div class="col-7 row">
+        <div class="col-3" style="overflow-x:hidden;overflow-y:auto;height:650px;">
+            @foreach (var img in Model.IMAGEs.ToList())
+            {
+                <img onmouseout="onMoveOutMouseOfImageItem();" onmousemove="onMoveMouseToImageItem('@img.URL', 'image_item_@img.ID');" id="image_item_@img.ID" src="@img.URL" style="width:100px;height:100px; object-fit:cover;" class="col ml-3 mt-1 zoom" />
+            }
+        </div>
+        <img class="col-9" src="@Model.IMAGEs.First().URL" style="object-fit:contain" id="main_image" />
+    </div>
+    <div class="col-5">
+        <h2>
+            @Model.TITLE
+        </h2>
+        <h1 style="color:#ee4d2d">
+            @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", Model.PRICE)đ
+        </h1>
+        <hr />
+        <p>
+            <h5>Chi tiết sách</h5>
+        </p>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Thể loại</th>
+                    <td>@Model.CATEGORY.NAME</td>
+                </tr>
+                <tr>
+                    <th>Số lượng</th>
+                    <td>@Model.AMOUNT</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+
+        <div class="number-input md-number-input">
+            Số lượng:
+            <a class="btn btn-outline-light" onclick="changeQuantity(-1)" style="border:none;">
+                <ion-icon name="remove-outline"></ion-icon>
+            </a>
+            <input class="quantity" style="width:50px;text-align:center;" name="quantity" value="1" type="text" id="amount-input" oninput="onChangeTextQuantity()">
+            <a class="btn btn-outline-light" onclick="changeQuantity(1)" style="border:none;">
+                <ion-icon name="add-outline"></ion-icon>
+            </a>
+        </div>
+
+        <div class="row col">
+            @if (userInfo != null && userInfo.ID.Equals(taka.Utils.C.ID_ADMIN))
+            {
+                <button type="button" onclick="updateTea()" onmousemove="onMouseMoveOutline('outline-btn')" onmouseout="onMouseOutOutline('outline-btn')" id="outline-btn" class="btn col p-3 m-3" style="background-color:white;color:#ee4d2d; border:3; border-color:#ee4d2d">Cập nhật thông tin</button>
+                <button type="button" onclick="showDeleteModal()" onmousemove="onMouseMoveColorFilled('colorfilled-btn')" onmouseout="onMouseOutColorFilled('colorfilled-btn')" id="colorfilled-btn" class="btn col p-3 m-3" style="background-color:#ee4d2d; color:white; border:3; border-color:#ee4d2d">Xoá</button>
+            }
+            else
+            {
+                <button type="button" onclick="addToCart()" onmousemove="onMouseMoveOutline('outline-btn')" onmouseout="onMouseOutOutline('outline-btn')" id="outline-btn" class="btn col p-3 m-3" style="background-color:white;color:#ee4d2d; border:3; border-color:#ee4d2d">Thêm vào giỏ hàng</button>
+                <button type="button" onclick="buyNow()" onmousemove="onMouseMoveColorFilled('colorfilled-btn')" onmouseout="onMouseOutColorFilled('colorfilled-btn')" id="colorfilled-btn" class="btn col p-3 m-3" style="background-color:#ee4d2d; color:white; border:3; border-color:#ee4d2d">Mua ngay</button>
+            }
+        </div>
+    </div>
+</div>
+<hr />
+<p>
+    <h5>
+        Mô tả sách
+    </h5>
+</p>
+<div class="p-3">
+    <p>
+        @Model.DESCRIPTION
+    </p>
+</div>
+<hr />
+<h5>
+    Đánh giá
+</h5>
+<div class="pl-3 pr-3">
+    @if (Model.RATEs.Count == 0)
+    {
+        <div>Chưa có đánh giá</div>
+    }
+    else
+    {
+        <hr />
+        foreach (var rate in Model.RATEs)
+        {
+            <br />
+            <i>
+                @rate.USER.FULLNAME
+            </i>
+            <div class="row ml-0 mt-1" style="color:lightgray">
+                @for (int _ = 0; _ < rate.RATE1; _++)
+                {
+                    <ion-icon style="color:#ffca00" name="star"></ion-icon>
+                }
+                @for (int _ = 0; _ < 5 - rate.RATE1; _++)
+                {
+                    <ion-icon name="star"></ion-icon>
+                }
+            </div>
+            <p>
+                @rate.COMMENT
+            </p>
+            <hr />
+        }
+    }
+    <br />
+</div>
+@if (userInfo != null && userInfo.ID.Equals(taka.Utils.C.ID_ADMIN))
+{
+    <script>
+    let updateTea = () => {
+            window.location.href = '/Admin/Edit?id=@Model.ID';
+        }
+    let showDeleteModal = () => {
+            $("#modalDelete").modal('show');
+        }
+    </script>
+}
+
+@if (userInfo == null)
+{
+    TempData[taka.Utils.C.TEMPDATA.RequireLogin] = true;
+    <script>
+        let addToCart = () => {
+            document
+                .getElementById("message").textContent = "Vui lòng đăng nhập";
+            showMessage()
+        }
+        let buyNow = () => {
+            addToCart();
+        }
+    </script>
+}
+
+@if (userInfo != null && !userInfo.ID.Equals(taka.Utils.C.ID_ADMIN))
+{
+<script>
+        let addToCart = () => {
+            const quant = $("#amount-input").val();
+            window.location.href = `/User/AddToCart?idTea=@Model.ID&quantity=${quant}`;
+        }
+        let buyNow = () => {
+            const quant = $("#amount-input").URLval()URL
+      URLURL      window.location.href = `/User/BuyNow?idTea=@Model.ID&quantity=${quant}`;
+        }
+</script>
+}
+<script>
+    let selectImgId = -1;
+    const onMoveMouseToImageItem = (url, id) => {
+        let oldUrl = $("#main_image")[0].src;
+        if (oldUrl != url)
+            $("#main_image")[0].src = url;
+        if (selectImgId != id) {
+            $('#' + id).css('border', '2px solid #ee4d2d')
+            selectImgId = id
+        }
+    }
+    const onMoveOutMouseOfImageItem = () => {
+        if (selectImgId != -1) {
+            $('#' + selectImgId).css('border', '0px')
+            selectImgId = -1
+        }
+    }
+    const onMouseMoveOutline = (id) => {
+        $('#' + id).css('background-color', '#ebd059')
+        $('#' + id).css('border-color', '#ebd059')
+        $('#' + id).css('color', 'white')
+    }
+    const onMouseOutOutline = (id) => {
+        $('#' + id).css('background-color', 'white')
+        $('#' + id).css('color', '#ee4d2d')
+        $('#' + id).css('border-color', '#ee4d2d')
+
+    }
+    const onMouseMoveColorFilled = (id) => {
+        $('#' + id).css('background-color', '#c42708')
+        $('#' + id).css('border-color', '#c42708')
+    }
+    const onMouseOutColorFilled = (id) => {
+        $('#' + id).css('background-color', '#ee4d2d')
+        $('#' + id).css('border-color', '#ee4d2d')
+
+    }
+
+    let onChangeTextQuantity = () => {
+        let rawStr = $(".number-input input").val()
+        if (rawStr.length == 0)
+            $(".number-input input").val(1)
+        else {
+            rawStr = rawStr.replace(/\D/g, '');
+            $(".number-input input").val(parseInt(rawStr) || 1)
+        }
+    }
+
+    let changeQuantity = (val) => {
+        const result = parseInt($(".number-input input").val()) + val
+        if (result == 0)
+            return
+        $(".number-input input").val(result)
+    }
+</script>

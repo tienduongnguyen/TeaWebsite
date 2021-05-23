@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="g-signin2" data-onsuccess="onSignIn" hidden></div>
+<div style="display:flex;flex-direction:row;background-color:#ee4d2d;padding:10px;border-radius:10px;min-height:650px">
+    <div style="flex:1;display:flex;justify-content:center">
+        <img style="width:60%;object-fit:contain;" src="~/Content/Icon/ic_icon.png" />
+    </div>
+    <div style="flex:1;background-color:#f5f5f5;padding:10px;border-radius:10px">
+        <div style="display:flex;flex:1">
+            <div class="list-group" id="list-tab" style="flex-direction: row;flex:1" role="tablist">
+                <a class="btn m-1 pl-5 pr-5 btn-light" style="flex:1" id="tab_login" data-toggle="list" href="#login" role="tab">Đăng nhập</a>
+                <a class="btn m-1 pl-5 pr-5 btn-light" id="tab_register" style="flex:1" data-toggle="list" href="#register" role="tab">Đăng ký</a>
+            </div>
+        </div>
+        <div style="display:flex;flex:1;">
+            <div class="tab-content" style="flex:1;" id="nav-tabContent">
+                <div class="tab-pane fade" id="login" role="tabpanel">
+                    <br />
+                    <h4 class="modal-title">Đăng nhập</h4>
+                    <hr />
+                    <form action="/Home/Login" method="post">
+                        <input name="tab" hidden value="login" />
+                        <input name="returnUrl" hidden value="@ViewBag.returnUrl" />
+                        <div class="form-group">
+                            <input name="phone" type="text" class="form-control" placeholder="Số điện thoại*" value="@ViewBag.phone" />
+                        </div>
+                        <div class="form-group">
+                            <input name="password" type="password" class="form-control" placeholder="Mật khẩu *" value="" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="col btn btn-light p-3" style="background-color:#ee4d2d;color:white;width:100%;" value="Đăng nhập" />
+                        </div>
+                        <div class="col btn btn-light p-2" style="width:100%;border:1px solid #808080" onclick="signIn()">
+                            <img src="~/Content/Icon/ic_google.png" style="height:35px;margin-right:20px" />
+                            Đăng nhập với google
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="register" role="tabpanel">
+                    <br />
+                    <h4 class="modal-title">Đăng ký</h4>
+                    <hr />
+                    <form action="/Home/Register" method="post">
+                        <input name="returnUrl" hidden value="@ViewBag.returnUrl" />
+                        <input name="tab" hidden value="register" />
+                        <div class="form-group">
+                            <input name="phone" type="number" class="form-control" placeholder="Số điện thoại *" value="@ViewBag.phone" required />
+                        </div>
+                        <div class="form-group">
+                            <input name="password" type="password" class="form-control" placeholder="Mật khẩu *" value="" required />
+                        </div>
+                        <div class="form-group">
+                            <input name="repassword" type="password" class="form-control" placeholder="Nhập lại mật khẩu *" value="" required />
+                        </div>
+                        <div class="form-group">
+                            <input name="email" id="email" type="email" class="form-control" placeholder="Email " value="@ViewBag.email" />
+                        </div>
+                        <div class="form-group">
+                            <input name="fullname" id="fullname" type="text" class="form-control" placeholder="Họ và tên " value="@ViewBag.fullname" />
+                        </div>
+                        <div class="form-group">
+                            <label>Giới tính</label>
+                            <select name="gender" class="form-control" value="@ViewBag.gender">
+                                <option value="Khác">Khác</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input name="birthday" type="date" class="form-control" placeholder="Ngày sinh " value="@ViewBag.birthday" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-light p-3" style="background-color:#ee4d2d;color:white;width:100%" value="Đăng ký" />
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@if (ViewBag.tab == "login")
+{
+    <script>
+        $('#login').addClass(['active', 'show'])
+        $('#tab_login').addClass(['active', 'show'])
+    </script>
+}
+else
+{
+    <script>
+        $('#register').addClass(['active', 'show'])
+        $('#tab_register').addClass(['active', 'show'])
+    </script>
+}
+
+
+<script>
+    let signIn = () => {
+        signOut(() => {
+            let auth2 = gapi.auth2.getAuthInstance();
+            auth2.signIn().then(function () {
+                if (auth2.isSignedIn.get()) {
+                    let profile = auth2.currentUser.get().getBasicProfile();
+                    $.post('/Home/LoginWithGoogle', {
+                        googleId: auth2.currentUser.get().getAuthResponse().login_hint,
+                        fullname: profile.getName(),
+                        email: profile.getEmail(),
+                        returnUrl:'@ViewBag.returnUrl'
+                    }, res => {
+                        window.location.href = '@ViewBag.returnUrl'
+                    })
+                    //window.location.href = `/Home/LoginWithGoogle?googleId=${auth2.currentUser.get().getAuthResponse().login_hint}&returnUrl=@ViewBag.returnUrl`
+                    console.log('ID: ' + profile.getId());
+                    console.log('Full Name: ' + profile.getName());
+                    console.log('Given Name: ' + profile.getGivenName());
+                    console.log('Family Name: ' + profile.getFamilyName());
+                    console.log('Image URL: ' + profile.getImageUrl());
+                    console.log('Email: ' + profile.getEmail());
+                }
+            });
+        })
+    }
+
+    let signOut = (callback) => {
+        let auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(() => {
+
+            setTimeout(callback, 1000)
+        })
+        auth2.disconnect()
+    }
+</script>

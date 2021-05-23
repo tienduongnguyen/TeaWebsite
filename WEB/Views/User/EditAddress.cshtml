@@ -1,0 +1,39 @@
+﻿@model taka.Models.Enitities.Address
+
+@{
+    ViewBag.Title = "Takasa";
+    Layout = "~/Views/User/_LayoutUser.cshtml";
+}
+
+<body>
+    <form action="/User/EditAddress" method="post" role="form">
+        <input type="hidden" name="idAddress" value="@Model.ID" />
+        <div class="user-page-brief">
+            <h3> Chỉnh Sửa Địa Chỉ</h3>
+        </div>
+        <div>
+            <table class="table">
+                <tr>
+                    <th>Họ Và Tên</th>
+                    <td><input name="name" type="text"  class="form-control" id="name" placeholder="Họ Và Tên" value="@Model.Name"></td>
+                </tr>
+                <tr>
+                    <th>Số Điện Thoại</th>
+                    <td><input name="phone" type="text" class="form-control" placeholder="Số Điện Thoại" value="@Model.Phone" /></td>
+                </tr>
+                <tr>
+                    <th>Địa Chỉ</th>
+                    <td><input name="address" type="text" class="form-control" placeholder="Địa Chỉ " value="@Model.Address1" /></td>
+                </tr>
+            </table>
+            <div class="form-group float-right">
+                <input type="submit" class="btn btn-light" style="background-color:#ee4d2d;color:white" value="Cập Nhật" />
+                <a href="~/User/AddressDetails" class="btn btn-light" style="background-color: white;color: #ee4d2d">
+                    Hủy
+                </a>
+            </div>
+        </div>
+
+    </form>
+</body>
+
