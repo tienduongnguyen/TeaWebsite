@@ -529,7 +529,7 @@ body {
 
 .price-tea {
     font-size: 16px;
-    color: #ee4d2d;
+    color: #00B38F;
     display: flex;
     flex: 1;
 }
@@ -546,7 +546,7 @@ body {
 }
 
     .active > a:first-child {
-        color: #ee4d2d !important;
+        color: #00B38F !important;
     }
 
 

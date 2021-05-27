@@ -6,7 +6,7 @@
 @RenderPage("~/Views/Shared/ModalDelete.cshtml")
 
 <nav class="nav float-right p-3">
-    <a href="/Admin/Add" class="btn btn-light" style="background-color:#ee4d2d;color:white">
+    <a href="/Admin/Add" class="btn btn-light" style="background-color:#00B38F;color:white">
         <b>Thêm trà</b>
     </a>
 </nav>
@@ -15,7 +15,7 @@
 <form action="?" class="pt-1 pb-4 container">
     <div class="input-group">
         <input name="text" type="text" class="form-control" placeholder="Tìm kiếm sách" value="@ViewBag.TextSearch" />
-        <button class="btn btn-solid-primary btn-light" style="color:white;background-color:#ee4d2d;" type="submit">
+        <button class="btn btn-solid-primary btn-light" style="color:white;background-color:#00B38F;" type="submit">
             <ion-icon style="font-size:15px" name="search"></ion-icon>
         </button>
     </div>
@@ -34,7 +34,7 @@
             <input type="number" class="form-control price" value="@ViewBag.PriceTo" />
             <p>
                 <a href="#" onclick="getUrl({ priceFrom: $('.form-control.price')[0].value, priceTo:$('.form-control.price')[1].value })"
-                   class="btn btn-light mt-1" style="background-color:#ee4d2d;color:white">
+                   class="btn btn-light mt-1" style="background-color:#00B38F;color:white">
                     Xác nhận
                 </a>
             </p>
@@ -46,7 +46,7 @@
                 if (cate.ID == ViewBag.cate)
                 {
                     <div class="list-group-item" style="border:0px;padding:10px">
-                        <b style="color:#ee4d2d">@cate.NAME</b>
+                        <b style="color:#00B38F">@cate.NAME</b>
                         <a href="#" onclick="getUrl({ page: 1, cate:0 })" class="btn">
                             <ion-icon style="font-size:25px;text-align:center" name="close-circle-outline"></ion-icon>
                         </a>
@@ -80,7 +80,7 @@
                     <span>@ViewBag.PageSize sản phẩm</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 16 })">16 sản phẩm</a>
+                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 10 })">16 sản phẩm</a>
                     <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 32 })">32 sản phẩm</a>
                     <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 64 })">64 sản phẩm</a>
                 </div>
@@ -112,18 +112,12 @@
             <div style="margin:10px; flex:1;flex-direction:row;display:flex; border: 1px solid white;padding:10px;text-decoration:none">
                 <div style="width:100px ;object-fit:contain"></div>
                 <b class="title-tea">
-                    Tên sách
+                    Tên trà
                 </b>
-                <div class="header-tea">
-                    Ngày nhập
-                </div>
-                <div class="header-tea">
-                    Số trang
-                </div>
-                <div class="header-tea">
+                <div class="header-tea" style="text-align:center">
                     Số lượng
                 </div>
-                <i class="price-tea">
+                <i class="price-tea" style="text-align:center">
                     Giá
                 </i>
                 <div class="header-tea">
@@ -141,11 +135,11 @@
                     <b class="title-tea">
                         @item.TITLE
                     </b>
-                    <div class="header-tea">
+                    <div class="header-tea" style="text-align:center">
                         @item.AMOUNT
                     </div>
-                    <i class="price-tea">
-                        @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.PRICE) đ
+                    <i class="price-tea" style="text-align:center">
+                        @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.PRICE)đ
                     </i>
                     <div class="header-tea" style="flex-direction:row">
                         <a href="/Admin/Edit?id=@item.ID">
@@ -178,7 +172,7 @@
                 {
                     if (i == ViewBag.CurrentPage)
                     {
-                        <div class="col item-page" style="background:#ee4d2d;color:white;">
+                        <div class="col item-page" style="background:#00B38F;color:white;">
                             @(ViewBag.CurrentPage)
                         </div>
                     }
@@ -211,7 +205,7 @@
 
 <script>
     const onMoveMouseItem = (id) => {
-        $('#' + id).css('border', '1px solid #ee4d2d')
+        $('#' + id).css('border', '1px solid #00B38F')
     }
     const onMoveOutMouseOfItem = (id) => {
         $('#' + id).css('border', '1px solid white')

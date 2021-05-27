@@ -2,23 +2,32 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewBag.Title = "Takasa";
+    ViewBag.Title = "Teader";
 
 }
-<style>
-    .item-page {
-        text-align: center;
-        margin-bottom: 30px;
-        padding: 10px;
-        background-color: lightgray;
-        color: black;
-        margin-left: 5px;
-        margin-right: 5px;
-        border-radius: 5px;
-        max-width: 50px;
-    }
-</style>
-
+<head>
+    <style>
+        .item-page {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: lightgray;
+            color: black;
+            margin-left: 5px;
+            margin-right: 5px;
+            border-radius: 5px;
+            max-width: 50px;
+        }
+        .confirm-price {
+            background-color: #00B38F;
+            color: white;
+        }
+        .confirm-price:hover {
+            background-color: #00876c;
+            color:white;
+        }
+    </style>
+</head>
 <div style="display:flex;flex-direction:row;">
     <div style="flex:1;min-width:160px">
         <div class="ml-3">
@@ -27,12 +36,12 @@
                 Giá
             </h5>
             <label>Từ</label>
-            <input type="number" class="form-control price" value="@ViewBag.PriceFrom" />
+            <input type="number" class="form-control price" value="@ViewBag.PriceFrom"  style="max-width:180px;"/>
             <label>Đến</label>
-            <input type="number" class="form-control price" value="@ViewBag.PriceTo" />
+            <input type="number" class="form-control price" value="@ViewBag.PriceTo" style="max-width:180px;"/>
             <p>
                 <a href="#" onclick="getUrl({ priceFrom: $('.form-control.price')[0].value, priceTo:$('.form-control.price')[1].value })"
-                   class="btn btn-light mt-1" style="background-color:#ee4d2d;color:white">
+                   class="btn btn-light mt-1 confirm-price" style="">
                     Xác nhận
                 </a>
             </p>
@@ -44,7 +53,7 @@
                 if (cate.ID == ViewBag.cate)
                 {
                     <div class="list-group-item" style="border:0px;padding:10px">
-                        <b style="color:#ee4d2d">@cate.NAME</b>
+                        <b style="color:#00B38F">@cate.NAME</b>
                         <a href="#" onclick="getUrl({ page: 1, cate:0 })" class="btn">
                             <ion-icon style="font-size:25px;text-align:center" name="close-circle-outline"></ion-icon>
                         </a>
@@ -78,7 +87,7 @@
                     <span>@ViewBag.PageSize sản phẩm</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 16 })">16 sản phẩm</a>
+                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 10 })">16 sản phẩm</a>
                     <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 32 })">32 sản phẩm</a>
                     <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 64 })">64 sản phẩm</a>
                 </div>
@@ -122,7 +131,7 @@
                                     <div style=" overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;height:50px;color:dimgray">
                                         @item.TITLE
                                     </div>
-                                    <b style="font-size: 18px; color: #ee4d2d;">
+                                    <b style="font-size: 18px; color: #00B38F;">
                                         @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.PRICE)đ
                                     </b>
                                     <div>
@@ -140,7 +149,7 @@
                                     {
                                         <ion-icon name="star"></ion-icon>
                                     }
-                                    <div style="color:#ee4d2d;margin-top:-5px" class="ml-1">(@item.RATECOUNT)</div>
+                                    <div style="color:#00B38F;margin-top:-5px" class="ml-1">(@item.RATECOUNT)</div>
                                 </div>
                             </a>
                         }
@@ -169,7 +178,7 @@
                 {
                     if (i == ViewBag.CurrentPage)
                     {
-                        <div class="col item-page" style="background:#ee4d2d;color:white;">
+                        <div class="col item-page" style="background:#00B38F;color:white;">
                             @(ViewBag.CurrentPage)
                         </div>
                     }
@@ -202,7 +211,7 @@
 
 <script>
     const onMoveMouseItem = (id) => {
-        $('#' + id).css('border', '1px solid #ee4d2d')
+        $('#' + id).css('border', '1px solid #00B38F')
     }
     const onMoveOutMouseOfItem = (id) => {
         $('#' + id).css('border', '1px solid white')

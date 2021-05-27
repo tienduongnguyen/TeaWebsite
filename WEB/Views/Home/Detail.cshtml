@@ -29,12 +29,12 @@
         <h2>
             @Model.TITLE
         </h2>
-        <h1 style="color:#ee4d2d">
+        <h1 style="color:#00B38F">
             @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", Model.PRICE)đ
         </h1>
         <hr />
         <p>
-            <h5>Chi tiết sách</h5>
+            <h5>Chi tiết trà</h5>
         </p>
         <table class="table">
             <tbody>
@@ -43,7 +43,7 @@
                     <td>@Model.CATEGORY.NAME</td>
                 </tr>
                 <tr>
-                    <th>Số lượng</th>
+                    <th>Số lượng còn lại</th>
                     <td>@Model.AMOUNT</td>
                 </tr>
             </tbody>
@@ -64,29 +64,115 @@
         <div class="row col">
             @if (userInfo != null && userInfo.ID.Equals(taka.Utils.C.ID_ADMIN))
             {
-                <button type="button" onclick="updateTea()" onmousemove="onMouseMoveOutline('outline-btn')" onmouseout="onMouseOutOutline('outline-btn')" id="outline-btn" class="btn col p-3 m-3" style="background-color:white;color:#ee4d2d; border:3; border-color:#ee4d2d">Cập nhật thông tin</button>
-                <button type="button" onclick="showDeleteModal()" onmousemove="onMouseMoveColorFilled('colorfilled-btn')" onmouseout="onMouseOutColorFilled('colorfilled-btn')" id="colorfilled-btn" class="btn col p-3 m-3" style="background-color:#ee4d2d; color:white; border:3; border-color:#ee4d2d">Xoá</button>
+                <button type="button" onclick="updateTea()" onmousemove="onMouseMoveOutline('outline-btn')" onmouseout="onMouseOutOutline('outline-btn')" id="outline-btn" class="btn col p-3 m-3" style="background-color:white;color:#00B38F; border:3; border-color:#00B38F">Cập nhật thông tin</button>
+                <button type="button" onclick="showDeleteModal()" onmousemove="onMouseMoveColorFilled('colorfilled-btn')" onmouseout="onMouseOutColorFilled('colorfilled-btn')" id="colorfilled-btn" class="btn col p-3 m-3" style="background-color:#00B38F; color:white; border:3; border-color:#00B38F">Xoá</button>
             }
             else
             {
-                <button type="button" onclick="addToCart()" onmousemove="onMouseMoveOutline('outline-btn')" onmouseout="onMouseOutOutline('outline-btn')" id="outline-btn" class="btn col p-3 m-3" style="background-color:white;color:#ee4d2d; border:3; border-color:#ee4d2d">Thêm vào giỏ hàng</button>
-                <button type="button" onclick="buyNow()" onmousemove="onMouseMoveColorFilled('colorfilled-btn')" onmouseout="onMouseOutColorFilled('colorfilled-btn')" id="colorfilled-btn" class="btn col p-3 m-3" style="background-color:#ee4d2d; color:white; border:3; border-color:#ee4d2d">Mua ngay</button>
+                <button type="button" onclick="addToCart()" onmousemove="onMouseMoveOutline('outline-btn')" onmouseout="onMouseOutOutline('outline-btn')" id="outline-btn" class="btn col p-3 m-3" style="background-color:white;color:#00B38F; border:3; border-color:#00B38F">Thêm vào giỏ hàng</button>
+                <button type="button" onclick="buyNow()" onmousemove="onMouseMoveColorFilled('colorfilled-btn')" onmouseout="onMouseOutColorFilled('colorfilled-btn')" id="colorfilled-btn" class="btn col p-3 m-3" style="background-color:#00B38F; color:white; border:3; border-color:#00B38F">Mua ngay</button>
             }
         </div>
     </div>
 </div>
-<hr />
-<p>
-    <h5>
-        Mô tả sách
-    </h5>
-</p>
-<div class="p-3">
+@if (Model.DESCRIPTION != null)
+{
     <p>
-        @Model.DESCRIPTION
+        <h5>
+            @Model.TITLE
+        </h5>
     </p>
-</div>
-<hr />
+    <div class="p-3">
+        <p>
+            @Model.DESCRIPTION
+        </p>
+    </div>
+    <hr />
+}
+@if (Model.STORY != null)
+{
+    <p>
+        <h5>
+            Câu chuyện cảm hứng
+        </h5>
+    </p>
+    <div class="p-3">
+        <p>
+            @Model.STORY
+        </p>
+    </div>
+    <hr />
+}
+@if (Model.INGREDIENT != null)
+{
+    <p>
+        <h5>
+            Thành phần
+        </h5>
+    </p>
+    <div class="p-3">
+        <p>
+            @Model.INGREDIENT
+        </p>
+    </div>
+    <hr />
+}
+@if (Model.FUNCTION != null)
+{
+    <p>
+        <h5>
+            Công dụng
+        </h5>
+    </p>
+    <div class="p-3">
+        <p>
+            @Model.FUNCTION
+        </p>
+    </div>
+    <hr />
+}
+@if (Model.CAFFEIN != null)
+{
+    <p>
+        <h5>
+            Hàm lượng Caffeine
+        </h5>
+    </p>
+    <div class="p-3">
+        <p>
+            @Model.CAFFEIN
+        </p>
+    </div>
+    <hr />
+}
+@if (Model.WEIGHT != null)
+{
+    <p>
+        <h5>
+            Khối lượng
+        </h5>
+    </p>
+    <div class="p-3">
+        <p>
+            @Model.WEIGHT
+        </p>
+    </div>
+    <hr />
+}
+@if (Model.USE != null)
+{
+    <p>
+        <h5>
+            Hướng dẫn sử dụng
+        </h5>
+    </p>
+    <div class="p-3">
+        <p>
+            @Model.USE
+        </p>
+    </div>
+    <hr />
+}
 <h5>
     Đánh giá
 </h5>
@@ -151,7 +237,7 @@
 
 @if (userInfo != null && !userInfo.ID.Equals(taka.Utils.C.ID_ADMIN))
 {
-<script>
+    <script>
         let addToCart = () => {
             const quant = $("#amount-input").val();
             window.location.href = `/User/AddToCart?idTea=@Model.ID&quantity=${quant}`;
@@ -160,7 +246,7 @@
             const quant = $("#amount-input").URLval()URL
       URLURL      window.location.href = `/User/BuyNow?idTea=@Model.ID&quantity=${quant}`;
         }
-</script>
+    </script>
 }
 <script>
     let selectImgId = -1;
@@ -169,7 +255,7 @@
         if (oldUrl != url)
             $("#main_image")[0].src = url;
         if (selectImgId != id) {
-            $('#' + id).css('border', '2px solid #ee4d2d')
+            $('#' + id).css('border', '2px solid #00B38F')
             selectImgId = id
         }
     }
@@ -186,8 +272,8 @@
     }
     const onMouseOutOutline = (id) => {
         $('#' + id).css('background-color', 'white')
-        $('#' + id).css('color', '#ee4d2d')
-        $('#' + id).css('border-color', '#ee4d2d')
+        $('#' + id).css('color', '#00B38F')
+        $('#' + id).css('border-color', '#00B38F')
 
     }
     const onMouseMoveColorFilled = (id) => {
@@ -195,8 +281,8 @@
         $('#' + id).css('border-color', '#c42708')
     }
     const onMouseOutColorFilled = (id) => {
-        $('#' + id).css('background-color', '#ee4d2d')
-        $('#' + id).css('border-color', '#ee4d2d')
+        $('#' + id).css('background-color', '#00B38F')
+        $('#' + id).css('border-color', '#00B38F')
 
     }
 

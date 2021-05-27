@@ -16,7 +16,7 @@ namespace taka.Controllers
 
         TakaDB dB = new TakaDB();
         // GET: Admin
-        public ActionResult Tea(int page = 1, string text = "", int cate = 0, int sort = 0, int pageSize = 16, int priceFrom = 0, int priceTo = 0)
+        public ActionResult Tea(int page = 1, string text = "", int cate = 0, int sort = 0, int pageSize = 10, int priceFrom = 0, int priceTo = 0)
         {
             ViewBag.ListCate = dB.GetCategories();
             ViewBag.Cate = cate;
@@ -25,7 +25,7 @@ namespace taka.Controllers
                 priceTo = 0;
             ViewBag.PriceFrom = priceFrom;
             ViewBag.PriceTo = priceTo;
-            ViewBag.PageSize = 16;
+            ViewBag.PageSize = 10;
             ViewBag.CurrentPage = page;
             switch (sort)
             {

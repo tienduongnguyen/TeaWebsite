@@ -2,48 +2,64 @@
     taka.Models.Enitities.USER userInfo = (taka.Models.Enitities.USER)Session["UserInfo"];
 }
 
-<header style="background-color:#ee4d2d" role="banner">
-    <img src="https://cdn0.fahasa.com/media/wysiwyg/Thang-05-2021/BigSale1_header.png" class="" style="width:100%;cursor:pointer" onclick="window.location.href = '/Home'" />
 
-    <div class="container">
-        <nav class="nav float-right">
+<header style="background-color:#00B38F" role="banner">
+    <style>
+        .nav button {
+            color: white;
+            background-color: transparent;
+            z-index: 49;
+            font-size: 1rem;
+            border-width: 2px;
+        }
+
+        .nav button:hover {           
+            border-color: #00B38F;
+            color: #00B38F;
+            opacity: 0.8;
+        }
+    </style>
+
+    <div class="container-fluid" style="width:100%;">
+        <nav class="nav float-right" style="margin-top:15px;">
             @if (userInfo == null)
             {
-                <button type="button" class="btn btn-light m-1" onclick="goToLoginPage()" style="color:#ee4d2d;">
-                    <b>Đăng nhập</b>
+                <button type="button" class="btn btn-light m-1" onclick="goToLoginPage()">
+                    Đăng nhập
                 </button>
             }
             @if (userInfo != null && userInfo.ID.Equals(taka.Utils.C.ID_ADMIN))
             {
-                <a href="/Admin/Tea" class="btn btn-light m-1" style="color:#ee4d2d;">
+                <a href="/Admin/Tea" class="btn btn-light m-1" style="color:#00B38F; z-index: 49;">
                     <b>Quản lý hệ thống</b>
                 </a>
-                <a href="/Home/Logout" class="btn btn-danger m-1" style="border:2px solid #ffffff">
+                <a href="/Home/Logout" class="btn btn-danger m-1" style="border:2px solid #ffffff; z-index: 49;">
                     <b>Đăng xuất</b>
                 </a>
             }
             @if (userInfo != null && !userInfo.ID.Equals(taka.Utils.C.ID_ADMIN))
             {
-                <a href="/User/ShoppingCart" style="position:relative">
-                    <ion-icon class="btn btn-light m-1" style="height:25px; margin-top:10px; color:#ee4d2d" name="cart-outline"></ion-icon>
-                    <b style="position:absolute;top:0%;right:0%;background-color:white;border-radius:30px;width:20px;height:20px;text-align:center;line-height:15px;border:1px solid #ee4d2d;color:#ee4d2d">
+                <a href="/User/ShoppingCart" style="position:relative; z-index: 49;">
+                    <ion-icon class="btn btn-light m-1" style="height:25px; margin-top:10px; color:white; background-color:transparent; border: 2px solid white;" name="cart-outline"></ion-icon>
+                    <b style="position:absolute;top:0%;right:0%;background-color:white;border-radius:30px;width:20px;height:20px;text-align:center;line-height:15px;border:2px solid white;color:black;">
                         @Session[taka.Utils.C.SESSION.Cart]
                     </b>
                 </a>
-                <button type="button" class="btn btn-light m-1" data-toggle="modal" data-target="#modalUser" style="color:#ee4d2d;">
-                    <b>Xin chào @userInfo.FULLNAME</b>
+                <button type="button" class="btn btn-light m-1" data-toggle="modal" data-target="#modalUser">
+                    Xin chào @userInfo.FULLNAME
                 </button>
             }
         </nav>
     </div>
-    <form action="/Home/List" class="input-group container pt-4 pb-4 mt-5">
-        <a href="/" class="col-2" style="margin-top:-5px;margin-right:35px">
+    <br />
+    <form action="/Home/List" class="input-group container pt-4 pb-4 mt-5" style="z-index: 50; margin-left: 130px;">
+        <a href="/" class="col-2" style="margin-top:-5px;margin-right:20px;padding-top:5px;">
             <img style="width:100%;min-height:40px;max-height:40px;object-fit:contain" src="~/Content/Icon/ic_icon.png" />
         </a>
         <div class="col-9 input-group">
-            <input name="text" type="text" class="form-control" placeholder="Đắc nhân tâm" value="@ViewBag.TextSearch" />
-            <button class="btn btn-solid-primary btn-light" style="color:white;background-color:#ee4d2d;" type="submit">
-                <ion-icon style="font-size:15px" name="search"></ion-icon>
+            <input name="text" type="text" style="margin-left:5px; border:none; border-radius:5px;" class="form-control" placeholder="Trà Assam" value="@ViewBag.TextSearch" />
+            <button class="btn btn-solid-primary btn-light" style="color:white;background-color:transparent;border:none;" type="submit">
+                <ion-icon style="font-size:25px" name="search"></ion-icon>
             </button>
         </div>
     </form>

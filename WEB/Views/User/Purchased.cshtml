@@ -5,7 +5,7 @@
     List<taka.Models.Enitities.ORDER> doneOrders = ViewBag.DoneOrders;
     List<taka.Models.Enitities.ADDRESS> addresses = ViewBag.Addresses;
 
-    ViewBag.Title = "Takasa";
+    ViewBag.Title = "Teader";
     Layout = "~/Views/User/_LayoutUser.cshtml";
 }
 
@@ -14,7 +14,7 @@
         <div class="list-group" id="list-tab" style="flex-direction: row;flex:1" role="tablist">
             <a class="btn m-1 pl-5 pr-5 btn-light active show" style="flex:1" id="tab_login" data-toggle="list" href="#processing" role="tab">
                 Chưa giao
-                <span class="badge badge-primary badge-pill" style="background-color:#ee4d2d;">@processingOrders.Count</span>
+                <span class="badge badge-primary badge-pill" style="background-color:#00B38F;">@processingOrders.Count</span>
             </a>
             <a class="btn m-1 pl-5 pr-5 btn-light" id="tab_register" style="flex:1" data-toggle="list" href="#deliveried" role="tab">
                 Đã giao

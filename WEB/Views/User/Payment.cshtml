@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<taka.Models.DatabaseInteractive.BillItem>
 
 @{
-    ViewBag.Title = "Takasa";
+    ViewBag.Title = "Teader";
     List<taka.Models.Enitities.ADDRESS> listAddress = ViewBag.addresses;
     ViewBag.MessageForValid = "Vui lòng nhập đủ thông tin";
 }
@@ -101,7 +101,7 @@
                 <div class="pt-4">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-muted">Đơn hàng</span>
-                        <span class="badge badge-secondary badge-pill" style="background-color:#ee4d2d;">@Model.Count()</span>
+                        <span class="badge badge-secondary badge-pill" style="background-color:#00B38F;">@Model.Count()</span>
                     </h4>
                     <ul class="list-group mb-3">
                         @foreach (var item in Model)
@@ -123,14 +123,14 @@
                             <span class="text-success shipFee">-$5</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
-                            <strong style="color:#ee4d2d;">Tổng tiền</strong>
+                            <strong style="color:#00B38F;">Tổng tiền</strong>
 
 
-                            <input type="text" style="color:#ee4d2d; border:none; background-color:white;" class="totalSum text-right font-weight-bold" disabled="disabled" />
+                            <input type="text" style="color:#00B38F; border:none; background-color:white;" class="totalSum text-right font-weight-bold" disabled="disabled" />
                             <input class="totalPrice" name="totalPrice" hidden />
                         </li>
                     </ul>
-                    <button type="submit" style="background-color:#ee4d2d;color:white" class="btn btn-light btn-block">Mua ngay</button>
+                    <button type="submit" style="background-color:#00B38F;color:white" class="btn btn-light btn-block">Mua ngay</button>
                 </div>
             </div>
             @*End Your Cart*@

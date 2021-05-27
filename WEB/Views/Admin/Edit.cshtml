@@ -18,13 +18,13 @@
 <form class="form-horizontal ml-2" method="post" action="/Admin/EditTea" enctype="multipart/form-data">
     <div class="row ml-2">
         <div onclick="goBack()" style="cursor:pointer">
-            <ion-icon style="font-size:25px;color:#ee4d2d;margin-top:5px;margin-right:10px" name="arrow-back-circle-outline"></ion-icon>
+            <ion-icon style="font-size:25px;color:#00B38F;margin-top:5px;margin-right:10px" name="arrow-back-circle-outline"></ion-icon>
         </div>
         <h4>Cập nhật thông tin</h4>
     </div>
     <hr />
     <p>
-        <h5>Ảnh bìa sách</h5>
+        <h5>Ảnh trà</h5>
     </p>
 
     <div style="display:flex;flex:1">
@@ -75,15 +75,61 @@
                 @Html.DropDownList("idCategory", new SelectList(ViewBag.listCategories, "ID", "Name"), htmlAttributes: new { @class = "form-control" })
             </div>
             <div class="form-group">
-                <label>Mô tả sách</label>
+                <label>Mô tả</label>
                 <textarea type="text"
                           class="form-control"
                           name="Description"
                           id="Description"
-                          rows="15">@Model.DESCRIPTION</textarea>
+                          rows="5">@Model.DESCRIPTION</textarea>
+            </div>
+            <div class="form-group">
+                <label>Câu chuyện cảm hứng</label>
+                <textarea type="text"
+                          class="form-control"
+                          name="Story"
+                          id="Story"
+                          rows="5">@Model.STORY</textarea>
+            </div>
+            <div class="form-group">
+                <label>Thành phần</label>
+                <textarea type="text"
+                          class="form-control"
+                          name="Ingredient"
+                          id="Ingredient"
+                          rows="5">@Model.INGREDIENT</textarea>
+            </div>
+            <div class="form-group">
+                <label>Công dụng</label>
+                <textarea type="text"
+                          class="form-control"
+                          name="Function"
+                          id="Function"
+                          rows="5">@Model.FUNCTION</textarea>
+            </div>
+            <div class="form-group">
+                <label>Hàm lượng Caffeine</label>
+                <textarea type="text"
+                          class="form-control"
+                          name="Caffein"
+                          id="Caffein">@Model.CAFFEIN</textarea>
+            </div>
+            <div class="form-group">
+                <label>Khối lượng</label>
+                <textarea type="text"
+                          class="form-control"
+                          name="Weight"
+                          id="Weight">@Model.WEIGHT</textarea>
+            </div>
+            <div class="form-group">
+                <label>Hướng dẫn sử dụng</label>
+                <textarea type="text"
+                          class="form-control"
+                          name="Use"
+                          id="Use"
+                          rows="5">@Model.USE</textarea>
             </div>
 
-            <button type="submit" id="button_push" class="btn btn-light col p-3" style="background-color:#ee4d2d;color:white;">Cập nhật thông tin</button>
+            <button type="submit" id="button_push" class="btn btn-light col p-3" style="background-color:#00B38F;color:white;">Cập nhật thông tin</button>
 
         </div>
     </div>
@@ -105,7 +151,7 @@
     let oldId = -1
     const onFocusImg = (id) => {
         $("#imgVoTra_" + id).css('opacity', 0.3);
-        $("#imgVoTra_" + id).css('border', '2px solid #ee4d2d')
+        $("#imgVoTra_" + id).css('border', '2px solid #00B38F')
         $("#icDelete_" + id).removeAttr('hidden');
         oldId = id
     }
