@@ -21,8 +21,9 @@ namespace taka.Utils
 
         public class DROPDOWN_SORT
         {
-            public static string NEWEST = "Mới nhất";
-            public static string OLDEST = "Cũ nhất";
+            public static string SORT_DEFAULT = "Sắp xếp";
+            public static string HIGHEST_AMOUNT = "Nhiều nhất";
+            public static string LOWEST_AMOUNT = "Ít nhất";
             public static string HIGHEST_PRICE = "Giá cao nhất";
             public static string LOWEST_PRICE = "Giá thấp nhất";
         }

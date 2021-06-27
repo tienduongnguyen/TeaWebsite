@@ -3,63 +3,64 @@
     List<taka.Models.Enitities.USER> listUser = (List<taka.Models.Enitities.USER>)ViewBag.list;
 }
 
-<div class="row">
-    <div class="col-6">
-        <h4>Danh sách</h4>
-        <hr />
-        <input type="text" class="form-control" id="search_user" placeholder="Tìm kiếm người dùng ( Tên, số điện thoại )" oninput="onInputSearch('body_user','search_user')" />
-        <div style="overflow-y:auto;height:800px">
-            <table class="table">
-                <tbody id="body_user">
-                    @foreach (var user in listUser)
-                    {
-                        <tr style="cursor:pointer" title="@user.KEYSEARCH" onclick="fillUser('@user.PHONE', '@user.EMAIL', '@user.FULLNAME', '@user.GENDER', '@user.BIRTHDAY')">
-                            <th>@user.PHONE</th>
-                            <td>@user.FULLNAME</td>
-                            @if (user.isBAN != 1)
-                            {
-                                <td><a href="/Admin/BanUser?id=@user.ID&ban=1"><img src="~/Content/Icon/ic_lock.png" style="width:25px" /></a></td>
-                            }
-                            else
-                            {
-                                <td><a href="/Admin/BanUser?id=@user.ID&ban=0"><img src="~/Content/Icon/ic_unlock.png" style="width:25px" /></a></td>
-                            }
-                        </tr>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h4>Danh sách</h4>
+            <hr />
+            <input type="text" class="form-control" id="search_user" placeholder="Tìm kiếm người dùng (Số điện thoại )" oninput="searchInBody()" />
+            <div style="overflow-y:auto;height:800px">
+                <table class="table">
+                    <tbody id="body_user">
+                        @foreach (var user in listUser)
+                        {
+                            <tr class="user_list" style="cursor:pointer" title="@user.KEYSEARCH" onclick="fillUser('@user.PHONE', '@user.EMAIL', '@user.FULLNAME', '@user.GENDER', '@user.BIRTHDAY')">
+                                <th class="phone_numba">@user.PHONE</th>
+                                <td>@user.FULLNAME</td>
+                                @if (user.isBAN != 1)
+                                {
+                                    <td><a href="/Admin/BanUser?id=@user.ID&ban=1"><img src="~/Content/Icon/ic_unlock.png" style="width:25px" /></a></td>
+                                }
+                                else
+                                {
+                                    <td><a href="/Admin/BanUser?id=@user.ID&ban=0"><img src="~/Content/Icon/ic_lock.png" style="width:25px" /></a></td>
+                                }
+                            </tr>
 
-                    }
-                </tbody>
-            </table>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-
-    <div class="col-6">
-        <form action="/Admin/UpdateUser" method="post">
-            <label>Số điện thoại</label>
-            <div class="form-group">
-                <input name="phone" id="user_phone" type="text" class="form-control" placeholder="Số điện thoại" value="" readonly />
-            </div>
-            <label>Email</label>
-            <div class="form-group">
-                <input name="email" id="user_email" type="email" class="form-control" placeholder="Email " value="" />
-            </div>
-            <label>Họ và tên</label>
-            <div class="form-group">
-                <input name="fullname" id="user_fullname" type="text" class="form-control" placeholder="Họ và tên " value="" />
-            </div>
-            <div class="form-group">
-                <label>Giới tính</label>
-                <select name="gender" id="user_gender" class="form-control">
-                    <option value="Khác">Khác</option>
-                    <option value="Nam">Nam</option>
-                    <option value="Nữ">Nữ</option>
-                </select>
-            </div>
-            <label>Ngày sinh</label>
-            <div class="form-group">
-                <input name="birthday" id="user_birthday" type="date" class="form-control" placeholder="Ngày sinh " value="" />
-            </div>
-            <input type="submit" class="btn btn-light" id="user_button" style="background-color:#00B38F;color:white" value="Cập nhật thông tin" disabled />
-        </form>
+        <div class="col-6">
+            <form action="/Admin/UpdateUser" method="post">
+                <label>Số điện thoại</label>
+                <div class="form-group">
+                    <input name="phone" id="user_phone" type="text" class="form-control" placeholder="Số điện thoại" value="" readonly />
+                </div>
+                <label>Email</label>
+                <div class="form-group">
+                    <input name="email" id="user_email" type="email" class="form-control" placeholder="Email " value="" />
+                </div>
+                <label>Họ và tên</label>
+                <div class="form-group">
+                    <input name="fullname" id="user_fullname" type="text" class="form-control" placeholder="Họ và tên " value="" />
+                </div>
+                <div class="form-group">
+                    <label>Giới tính</label>
+                    <select name="gender" id="user_gender" class="form-control">
+                        <option value="Khác">Khác</option>
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                    </select>
+                </div>
+                <label>Ngày sinh</label>
+                <div class="form-group">
+                    <input name="birthday" id="user_birthday" type="date" class="form-control" placeholder="Ngày sinh " value="" />
+                </div>
+                <input type="submit" class="btn btn-light" id="user_button" style="background-color:#00B38F;color:white" value="Cập nhật thông tin" disabled />
+            </form>
+        </div>
     </div>
 </div>
 <script>
@@ -70,5 +71,25 @@
         $("#user_gender").val(gender)
         $("#user_birthday").val(birthday)
         $("#user_button").removeAttr("disabled")
+    }
+
+    let searchInBody = () => {
+        // Declare variables
+        var input, filter, ul, li, a, i, txtValue;
+        input = $('#search_user');
+        filter = $('#search_user').val().toUpperCase();
+        ul = document.getElementById("body_user");
+        li = ul.getElementsByClassName('user_list');
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByClassName("phone_numba")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
     }
 </script>

@@ -1,9 +1,22 @@
-﻿@model taka.Models.Enitities.Address
+﻿@model taka.Models.Enitities.ADDRESS
 
 @{
     ViewBag.Title = "Takasa";
     Layout = "~/Views/User/_LayoutUser.cshtml";
 }
+<head>
+    <style>
+        .add-address {
+            background-color: #00B38F;
+            color: white;
+        }
+
+            .add-address:hover {
+                background-color: #008066;
+                color: white;
+            }
+    </style>
+</head>
 <body>
     <form action="/User/AddAddress" method="post" role="form">
         <div class="user-page-brief">
@@ -25,8 +38,8 @@
                 </tr>
             </table>
             <div class="form-group float-right" style="">
-                <input type="submit" class="btn btn-light" style="background-color:#ee4d2d;color:white" value="Thêm" />
-                <a href="~/User/AddressDetails" class="btn btn-light" style="background-color: white;color: #ee4d2d">
+                <input type="submit" class="btn btn-light add-address" style="" value="Thêm" />
+                <a href="~/User/AddressDetails" class="btn btn-light" style="background-color: white;color:#00B38F;">
                     Hủy
                 </a>
             </div>

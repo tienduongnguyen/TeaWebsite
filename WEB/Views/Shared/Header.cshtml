@@ -18,6 +18,11 @@
             color: #00B38F;
             opacity: 0.8;
         }
+        .cart-btn:hover {
+            border-color: #00B38F;
+            color: #00B38F;
+            opacity: 0.8;
+        }
     </style>
 
     <div class="container-fluid" style="width:100%;">
@@ -39,7 +44,7 @@
             }
             @if (userInfo != null && !userInfo.ID.Equals(taka.Utils.C.ID_ADMIN))
             {
-                <a href="/User/ShoppingCart" style="position:relative; z-index: 49;">
+                <a class="cart-btn" href="/User/ShoppingCart" style="position:relative; z-index: 49;">
                     <ion-icon class="btn btn-light m-1" style="height:25px; margin-top:10px; color:white; background-color:transparent; border: 2px solid white;" name="cart-outline"></ion-icon>
                     <b style="position:absolute;top:0%;right:0%;background-color:white;border-radius:30px;width:20px;height:20px;text-align:center;line-height:15px;border:2px solid white;color:black;">
                         @Session[taka.Utils.C.SESSION.Cart]
@@ -57,7 +62,7 @@
             <img style="width:100%;min-height:40px;max-height:40px;object-fit:contain" src="~/Content/Icon/ic_icon.png" />
         </a>
         <div class="col-9 input-group">
-            <input name="text" type="text" style="margin-left:5px; border:none; border-radius:5px;" class="form-control" placeholder="Trà Assam" value="@ViewBag.TextSearch" />
+            <input name="text" type="text" style="margin-left:5px; border:none; border-radius:5px; opacity:0.9;" class="form-control" placeholder="Trà Assam" value="@ViewBag.TextSearch" />
             <button class="btn btn-solid-primary btn-light" style="color:white;background-color:transparent;border:none;" type="submit">
                 <ion-icon style="font-size:25px" name="search"></ion-icon>
             </button>

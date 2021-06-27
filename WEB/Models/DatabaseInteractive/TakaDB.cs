@@ -39,16 +39,14 @@ namespace taka.Models.DatabaseInteractive
             takaDB = new TakaDBContext();
         }
 
-        public ListTea GetListTea(int page = 1, string text = "", int cate = 0, int sort = 0, int pageSize = 10, int type = 0, int language = 0, int priceFrom = 0, int priceTo = 0)
+        public ListTea GetListTea(int page = 1, string text = "", int cate = 0, int sort = 0, int pageSize = 12, int priceFrom = 0, int priceTo = 0)
         {
             var removeUnicode = HelperFunctions.RemoveUnicode(text);
             var listItem = takaDB.TEAs.Where(x => x.isHIDDEN != 1);
             listItem = listItem.Where(m => m.KEYSEARCH.Contains(removeUnicode));
+
             if (cate != 0)
                 listItem = listItem.Where(m => m.ID_CATEGORY == cate);
-
-
-
 
             if (priceTo > 0)
                 listItem = listItem.Where(m => (m.PRICE > priceFrom && m.PRICE < priceTo));
@@ -58,20 +56,23 @@ namespace taka.Models.DatabaseInteractive
             switch (sort)
             {
                 case 0:
-                    listItem = listItem.OrderByDescending(m => m.ID);
-                    break;
-                case 1:
                     listItem = listItem.OrderBy(m => m.ID);
                     break;
+                case 1:
+                    listItem = listItem.OrderByDescending(m => m.AMOUNT);
+                    break;
                 case 2:
-                    listItem = listItem.OrderBy(m => m.PRICE);
+                    listItem = listItem.OrderBy(m => m.AMOUNT);
                     break;
                 case 3:
+                    listItem = listItem.OrderBy(m => m.PRICE);
+                    break;
+                case 4:
                     listItem = listItem.OrderByDescending(m => m.PRICE);
                     break;
             }
 
-            int maxPage = (int)Math.Ceiling((double)(listItem.Count() / pageSize));
+            int maxPage = listItem.Count() / pageSize + 1;
             return new ListTea(maxPage, listItem.Skip((page - 1) * pageSize).Take(pageSize).ToList());
         }
 
@@ -232,7 +233,8 @@ namespace taka.Models.DatabaseInteractive
         }
         public List<CART> GetListCarts(int idUser)
         {
-            var listCarts = takaDB.CARTs.Where(x => x.ID_USER == idUser).ToList();
+            List<CART> listCarts = new List<CART>();
+            listCarts = takaDB.CARTs.Where(x => x.ID_USER == idUser).ToList();
             return listCarts;
         }
         public void DeleteCartItem(int idUser, int idTea)
@@ -394,6 +396,32 @@ namespace taka.Models.DatabaseInteractive
             takaDB.SaveChanges();
         }
 
+        public void ChangeImageOrder(int oldOrder, int newOrder, int id)
+        {
+            var img = takaDB.IMAGEs.Where(x => x.ID_TEA == id);
+            int count = newOrder - oldOrder;
+
+            if (count > 0)
+            {
+                for (int i = newOrder; i > oldOrder; i--)
+                {
+                    img.Where(x => x.ORDER == i).First().ORDER = img.Where(x => x.ORDER == i - 1).First().ORDER;
+                }
+                img.Where(x => x.ORDER == oldOrder).First().ORDER = newOrder;
+            }
+            else if (count < 0)
+            {
+                count = 0 - count;
+                for (int i = newOrder; i < oldOrder; i++)
+                {
+                    img.Where(x => x.ORDER == i).First().ORDER = img.Where(x => x.ORDER == i + 1).First().ORDER;
+                }
+                img.Where(x => x.ORDER == oldOrder).First().ORDER = newOrder;
+            }
+
+            takaDB.SaveChanges();
+        }
+
         public List<BillItem> GetBillItems(int[] ids)
         {
 
@@ -416,14 +444,14 @@ namespace taka.Models.DatabaseInteractive
             return billItems;
         }
 
-        public List<ADDRESS> GetAddresses(int idUser)
+        public List<ADDRESS> GetAddressByUser(int idUser)
         {
             List<ADDRESS> addresses = new List<ADDRESS>();
             addresses = takaDB.ADDRESSes.Where(x => x.ID_USER == idUser).ToList();
             return addresses;
         }
 
-        public ADDRESS GetAddress(int idAddress)
+        public ADDRESS GetAddressByIdAddress(int? idAddress)
         {
             return takaDB.ADDRESSes.Where(x => x.ID == idAddress).First();
         }
@@ -463,6 +491,13 @@ namespace taka.Models.DatabaseInteractive
             {
 
             }
+        }
+
+        public void ChangePassword(string newPass, int idUser)
+        {
+            USER user = takaDB.USERs.Where(x => x.ID == idUser).First();
+            user.PASSWORD = HelperFunctions.sha256(newPass);
+            takaDB.SaveChanges();
         }
 
         public void CheckOut(int[] id_cart, int id_address, int totalPrice, string shipper, int idUser, string fullName, string phone, string address, string message)
@@ -509,15 +544,73 @@ namespace taka.Models.DatabaseInteractive
             takaDB.SaveChanges();
         }
 
-        public List<ORDER> GetProcessingOrders(int id)
+        public List<ORDER> GetProcessingOrders(int id = -1)
         {
-            List<ORDER> orders = takaDB.ORDERs.Where(x => x.ID_USER == id && x.ORDER_STATUS == 0).ToList();
+            List<ORDER> orders = id.Equals(-1) ?
+                takaDB.ORDERs.Where(x => x.ORDER_STATUS == 0).ToList()
+                : takaDB.ORDERs.Where(x => x.ID_USER == id && x.ORDER_STATUS == 0).ToList();
+            orders = orders.OrderByDescending(x => x.CREATE_DATE).ToList();
             return orders;
         }
-        public List<ORDER> GetDoneOrders(int id)
+
+        public List<ORDER> GetDoneOrders(int id = -1)
         {
-            List<ORDER> orders = takaDB.ORDERs.Where(x => x.ID_USER == id && x.ORDER_STATUS == 1).ToList();
+            List<ORDER> orders = id.Equals(-1) ?
+                takaDB.ORDERs.Where(x => x.ORDER_STATUS == 1).ToList()
+                : takaDB.ORDERs.Where(x => x.ID_USER == id && x.ORDER_STATUS == 1).ToList();
+            orders = orders.OrderByDescending(x => x.CREATE_DATE).ToList();
             return orders;
+        }
+
+        public void ConfirmOrder(int id)
+        {
+            ORDER order = takaDB.ORDERs.Where(x => x.ID.Equals(id)).First();
+            if (order != null)
+            {
+                order.ORDER_STATUS = 1;
+                order.CREATE_DATE = DateTime.Now;
+                takaDB.SaveChanges();
+            }
+        }
+
+        public void AddRating(int idTea, int star, int idUser)
+        {
+
+            var findRating = takaDB.RATEs.Where(x => x.ID_TEA == idTea && x.ID_USER == idUser).ToList();
+            if (findRating.Count() > 0)
+            {
+                RATE rate = findRating.First();
+                rate.RATE1 = star;
+                takaDB.SaveChanges();
+            }
+            else
+            {
+                RATE rate = new RATE();
+                rate.ID_TEA = idTea;
+                rate.ID_USER = idUser;
+                rate.RATE1 = star;
+                takaDB.RATEs.Add(rate);
+                takaDB.SaveChanges();
+            }
+        }
+        public void AddComment(int idTea, string comment, int idUser)
+        {
+            var findComment = takaDB.RATEs.Where(x => x.ID_TEA == idTea && x.ID_USER == idUser).ToList();
+            if (findComment.Count() > 0)
+            {
+                RATE rate = findComment.First();
+                rate.COMMENT = comment;
+                takaDB.SaveChanges();
+            }
+            else
+            {
+                RATE rate = new RATE();
+                rate.ID_TEA = idTea;
+                rate.ID_USER = idUser;
+                rate.COMMENT = comment;
+                takaDB.RATEs.Add(rate);
+                takaDB.SaveChanges();
+            }
         }
 
     }

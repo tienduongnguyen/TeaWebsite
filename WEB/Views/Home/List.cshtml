@@ -18,27 +18,34 @@
             border-radius: 5px;
             max-width: 50px;
         }
+
         .confirm-price {
             background-color: #00B38F;
             color: white;
         }
-        .confirm-price:hover {
-            background-color: #00876c;
-            color:white;
+
+            .confirm-price:hover {
+                background-color: #00876c;
+                color: white;
+            }
+        .unchosen {
+            font-size: 25px;
+            text-align: center;
         }
+        
     </style>
 </head>
 <div style="display:flex;flex-direction:row;">
-    <div style="flex:1;min-width:160px">
+    <div style="flex:1;min-width:15em;">
         <div class="ml-3">
             <br />
             <h5>
                 Giá
             </h5>
             <label>Từ</label>
-            <input type="number" class="form-control price" value="@ViewBag.PriceFrom"  style="max-width:180px;"/>
+            <input type="number" class="form-control price" value="@ViewBag.PriceFrom" style="max-width:180px;" />
             <label>Đến</label>
-            <input type="number" class="form-control price" value="@ViewBag.PriceTo" style="max-width:180px;"/>
+            <input type="number" class="form-control price" value="@ViewBag.PriceTo" style="max-width:180px;" />
             <p>
                 <a href="#" onclick="getUrl({ priceFrom: $('.form-control.price')[0].value, priceTo:$('.form-control.price')[1].value })"
                    class="btn btn-light mt-1 confirm-price" style="">
@@ -48,25 +55,27 @@
             <h5>
                 THỂ LOẠI
             </h5>
-            @foreach (var cate in ViewBag.ListCate)
-            {
-                if (cate.ID == ViewBag.cate)
+            <div class="cate-list">
+                @foreach (var cate in ViewBag.ListCate)
                 {
-                    <div class="list-group-item" style="border:0px;padding:10px">
-                        <b style="color:#00B38F">@cate.NAME</b>
-                        <a href="#" onclick="getUrl({ page: 1, cate:0 })" class="btn">
-                            <ion-icon style="font-size:25px;text-align:center" name="close-circle-outline"></ion-icon>
-                        </a>
-                    </div>
+                    if (cate.ID == ViewBag.cate)
+                    {
+                        <div class="list-group-item" style="border:0px;padding:0px 5px; width:210px;">
+                            <b style="color:#00B38F">@cate.NAME</b>
+                            <a href="#" onclick="getUrl({ page: 1, cate:0 })" class="btn">
+                                <ion-icon style=""  name="close-circle-outline" class="unchosen"></ion-icon>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="list-group-item" style="border:0px;padding:10px;color:dimgray" href="#" onclick="getUrl({ cate: '@cate.ID', page:1 })">@cate.NAME</a>
+                    }
                 }
-                else
-                {
-                    <a class="list-group-item" style="border:0px;padding:10px;color:dimgray" href="#" onclick="getUrl({ cate: '@cate.ID', page:1 })">@cate.NAME</a>
-                }
-            }
+            </div>
         </div>
     </div>
-    <div style="background-color:#f5f5f5;width:15px"></div>
+    <div style="background-color:#f5f5f5;width:15px;"></div>
     <div style="flex:4;margin-left:15px">
         <div class="row col">
             <div class="mt-1">Sắp xếp theo</div>
@@ -75,23 +84,13 @@
                     <span>@ViewBag.TextSort</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 0 })">@taka.Utils.C.DROPDOWN_SORT.NEWEST</a>
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 1 })">@taka.Utils.C.DROPDOWN_SORT.OLDEST</a>
+                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 0 })">@taka.Utils.C.DROPDOWN_SORT.HIGHEST_AMOUNT</a>
+                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 1 })">@taka.Utils.C.DROPDOWN_SORT.LOWEST_AMOUNT</a>
                     <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 2 })">@taka.Utils.C.DROPDOWN_SORT.LOWEST_PRICE</a>
                     <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 3 })">@taka.Utils.C.DROPDOWN_SORT.HIGHEST_PRICE</a>
                 </div>
             </div>
 
-            <div class="dropdown ml-3">
-                <button class="btn dropdown-toggle" type="button" id="dropdownPageSize" data-toggle="dropdown">
-                    <span>@ViewBag.PageSize sản phẩm</span>
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 10 })">16 sản phẩm</a>
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 32 })">32 sản phẩm</a>
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 64 })">64 sản phẩm</a>
-                </div>
-            </div>
 
             @if (ViewBag.Sort != 0)
             {
@@ -112,6 +111,7 @@
         }
         else
         {
+            
             <p class="mt-3">
                 Trang @ViewBag.CurrentPage/@ViewBag.maxPage
             </p>

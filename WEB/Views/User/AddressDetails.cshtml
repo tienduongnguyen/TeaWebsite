@@ -1,10 +1,21 @@
-﻿@model IEnumerable<taka.Models.Enitities.Address>
+﻿@model IEnumerable<taka.Models.Enitities.ADDRESS>
 
 @{
-    ViewBag.Title = "Takasa";
+    ViewBag.Title = "Teader";
     Layout = "~/Views/User/_LayoutUser.cshtml";
 }
-
+<head>
+    <style>
+        .new-address {
+            background-color: #00B38F;
+            color: white;
+        }
+            .new-address:hover {
+                background-color: #008066;
+                color:white;
+            }
+    </style>
+</head>
 <body>
     @RenderPage("~/Views/User/ModelDeleteAddress.cshtml")
     <form action="/User/AddresDetails" method="post" role="form">
@@ -13,7 +24,7 @@
                 <h3> Danh Sách Địa Chỉ </h3>
             </div>
             <div style="margin-left:auto">
-                <a href="~/User/AddAddress" class="btn btn-light" style="background-color:#ee4d2d;color:white">
+                <a href="~/User/AddAddress" class="btn btn-light new-address" style="">
                     Thêm Địa Chỉ Mới
                 </a>
             </div>
@@ -27,17 +38,17 @@
                         <div class="address-display__field-container address-display__field-container--name">
                             <div class="address-display__field-label">Họ Và Tên</div>
                             <div class="address-display__field-content">
-                                <span class="address-display__name-text">@item.Name</span>
+                                <span class="address-display__name-text">@item.NAME</span>
                             </div>
                         </div>
                         <div class="address-display__field-container">
                             <div class="address-display__field-label">Số Điện Thoại</div>
-                            <div class="address-display__field-content">@item.Phone</div>
+                            <div class="address-display__field-content">@item.PHONE</div>
                         </div>
                         <div class="address-display__field-container address-display__field-container__address">
                             <div class="address-display__field-label">Địa Chỉ</div>
                             <div class="address-display__field-content">
-                                <span>@item.Address1</span>
+                                <span>@item.ADDRESS1</span>
                             </div>
                         </div>
                     </div>
