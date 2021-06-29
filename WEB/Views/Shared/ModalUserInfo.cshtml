@@ -1,9 +1,20 @@
 ﻿@{
     taka.Models.Enitities.USER userInfo = (taka.Models.Enitities.USER)@Session[taka.Utils.C.SESSION.UserInfo];
 }
+<head>
+    <style>
+        .modal-content{
+            opacity:0.9;
+            
+        }
+        tr td{
+            border: 0;
+        }
+    </style>
+</head>
 @if (userInfo != null)
 {
-    <div class="modal" tabindex="-1" role="dialog" id="modalUser">
+    <div class="modal" tabindex="-1" role="dialog" id="modalUser" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

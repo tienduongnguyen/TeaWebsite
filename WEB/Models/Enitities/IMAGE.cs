@@ -16,6 +16,8 @@ namespace taka.Models.Enitities
 
         public int? ID_TEA { get; set; }
 
+        public int? ORDER { get; set; }
+
         public virtual TEA TEA { get; set; }
     }
 }

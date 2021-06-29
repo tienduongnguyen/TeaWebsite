@@ -40,7 +40,7 @@ namespace taka.Models.Enitities
         [StringLength(250)]
         public string GOOGLE_ID { get; set; }
 
-        [StringLength(10)]
+        [StringLength(50)]
         public string GENDER { get; set; }
 
         [StringLength(50)]

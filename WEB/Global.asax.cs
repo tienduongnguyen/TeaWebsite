@@ -33,9 +33,12 @@ namespace taka
 
         void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
+            try { 
             USER user = (USER)Session[C.SESSION.UserInfo];
             if (user != null)
                 Session[C.SESSION.Cart] = new Models.DatabaseInteractive.TakaDB().GetListCarts(user.ID).Count;
+            }
+            catch (Exception) { }
         }
 
 

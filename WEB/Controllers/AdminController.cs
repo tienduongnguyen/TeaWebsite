@@ -30,15 +30,18 @@ namespace taka.Controllers
             switch (sort)
             {
                 case 0:
-                    ViewBag.TextSort = C.DROPDOWN_SORT.NEWEST;
+                    ViewBag.TextSort = C.DROPDOWN_SORT.SORT_DEFAULT;
                     break;
                 case 1:
-                    ViewBag.TextSort = C.DROPDOWN_SORT.OLDEST;
+                    ViewBag.TextSort = C.DROPDOWN_SORT.HIGHEST_AMOUNT;
                     break;
                 case 2:
-                    ViewBag.TextSort = C.DROPDOWN_SORT.LOWEST_PRICE;
+                    ViewBag.TextSort = C.DROPDOWN_SORT.LOWEST_AMOUNT;
                     break;
                 case 3:
+                    ViewBag.TextSort = C.DROPDOWN_SORT.LOWEST_PRICE;
+                    break;
+                case 4:
                     ViewBag.TextSort = C.DROPDOWN_SORT.HIGHEST_PRICE;
                     break;
             }
@@ -58,7 +61,21 @@ namespace taka.Controllers
 
         public ActionResult Order()
         {
+            List<ORDER> processingOrder = dB.GetProcessingOrders();
+            List<ORDER> doneOrder = dB.GetDoneOrders();
+            ViewBag.ProcessingOrders = processingOrder;
+            ViewBag.ProcessingOrdersAddresses = processingOrder.Select(x => dB.GetAddressByIdAddress(x.ID_ADDRESS)).ToList();
+            ViewBag.DoneOrders = doneOrder;
+            ViewBag.DoneOrdersAddresses = doneOrder.Select(x => dB.GetAddressByIdAddress(x.ID_ADDRESS)).ToList();
+
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmOrder(int id)
+        {
+            dB.ConfirmOrder(id);
+            return RedirectToAction("Order", "Admin");
         }
 
         public ActionResult User()
@@ -105,7 +122,21 @@ namespace taka.Controllers
             string Use)
         {
             dB.EditTea(ID, images_delete, Images, Title, Price, idCategory, Amount, Description, Story, Ingredient, Function, Caffein, Weight, Use);
-            return RedirectToAction("Edit", "Admin", new { id = ID });
+            return RedirectToAction("Tea", "Admin");
+        }
+
+        [HttpPost]
+        public JsonResult changeImageOrder(int oldOrder, int newOrder, int id)
+        {
+            try
+            {
+                dB.ChangeImageOrder(oldOrder, newOrder, id);
+                return Json(new { status = 1 });
+            }
+            catch (Exception)
+            {
+                return Json(new { status = 0 });
+            }
         }
 
         [HttpPost]
@@ -140,7 +171,7 @@ namespace taka.Controllers
             string Use)
         {
             TEA tea = dB.AddTea(Images, Title, Price, idCategory, Amount, Description, Story, Ingredient, Function, Caffein, Weight, Use);
-            return RedirectToAction("Detail", "Home", new { id = tea.ID });
+            return RedirectToAction("Tea", "Admin");
         }
 
         public ActionResult Add()

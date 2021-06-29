@@ -7,142 +7,228 @@
 
     List<taka.Models.Enitities.IMAGE> images = new List<taka.Models.Enitities.IMAGE>();
 
-    images.AddRange(Model.IMAGEs.ToList());
+    images.AddRange(Model.IMAGEs.OrderBy(x => x.ORDER).ToList());
 }
 
-
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
 <br />
 <br />
-<form class="form-horizontal ml-2" method="post" action="/Admin/EditTea" enctype="multipart/form-data">
-    <div class="row ml-2">
-        <div onclick="goBack()" style="cursor:pointer">
-            <ion-icon style="font-size:25px;color:#00B38F;margin-top:5px;margin-right:10px" name="arrow-back-circle-outline"></ion-icon>
+<div class="container">
+    <form class="form-horizontal ml-2" method="post" action="/Admin/EditTea" enctype="multipart/form-data">
+        <div class="row ml-2">
+            <div onclick="goBack()" style="cursor:pointer">
+                <ion-icon style="font-size:25px;color:#00B38F;margin-top:5px;margin-right:10px" name="arrow-back-circle-outline"></ion-icon>
+            </div>
+            <h4>Cập nhật thông tin</h4>
         </div>
-        <h4>Cập nhật thông tin</h4>
-    </div>
-    <hr />
-    <p>
-        <h5>Ảnh trà</h5>
-    </p>
+        <hr />
+        <p>
+            <h5>Ảnh trà</h5>
+        </p>
 
-    <div style="display:flex;flex:1">
-        <div class="m-3">
-            <label for="file-input">
-                <img src="https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png" id="imgVoTra" style="height:250px;width:150px;object-fit:contain;text-align:center;" />
-            </label>
-            <input id="file-input" name="Images" type="file" hidden multiple accept="image/*" onchange="OnAddImage();" />
+        <div style="display:flex;flex:1">
+            <div class="m-3">
+                <label for="file-input">
+                    <img src="https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png" id="imgVoTra" style="height:250px;width:150px;object-fit:contain;text-align:center;" />
+                </label>
+                <input id="file-input" name="Images" type="file" hidden multiple accept="image/*" onchange="OnAddImage();" />
+            </div>
+            <div id="images_delete" hidden></div>
+            <div id="images" style="overflow-x:auto;height:300px;flex-direction:row;display:flex;overflow-y:hidden">
+                @for (int i = 0; i < images.Count; i++)
+                {
+                    var img = images[i];
+                    <div onclick="deleteImage('@i', '@img.ID')" class="m-3" style="position: relative; display: inline-block;" id="divVoTra_@i" onmouseover="onFocusImg('@i')" onmouseout="onBlurImg()">
+                        <input id="idImage" name="idImage" type="number" hidden value="@img.ID" />
+                        <input id="indexImage" name="indexImage" type="number" hidden value="@img.ORDER" />
+                        <img id="imgVoTra_@i" src="@img.URL" style="height:250px;width:250px;object-fit:contain;text-align:center;" />
+                        <div style="position: absolute; top: 100px; left: 100px; height: 100%; width: 100%; z-index: 2;">
+                            <img hidden='hidden' id="icDelete_@i" style="height:50px;width:50px;object-fit:contain;" src="/Content/Icon/ic_delete.png" />
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-        <div id="images_delete" hidden></div>
-        <div id="images" style="overflow-x:auto;height:300px;flex-direction:row;display:flex;overflow-y:hidden">
-            @for (int i = 0; i < images.Count; i++)
-            {
-                <div onclick="deleteImage('@i', '@images[i].ID')" class="m-3" style="position: relative; display: inline-block;" id="divVoTra_@i" onmouseover="onFocusImg('@i')" onmouseout="onBlurImg()">
-                    <img id="imgVoTra_@i" src="@images[i].URL" style="height:250px;width:250px;object-fit:contain;text-align:center;" />
-                    <div style="position: absolute; top: 100px; left: 100px; height: 100%; width: 100%; z-index: 2;"><img hidden='hidden' id="icDelete_@i" style="height:50px;width:50px;object-fit:contain;" src="/Content/Icon/ic_delete.png" /></div>
-                </div>
-            }
-        </div>
-    </div>
-    <input class="form-control" name="ID" value="@Model.ID" hidden />
-    <div class="col">
+        <input class="form-control" id="id_tea" name="ID" value="@Model.ID" hidden />
         <div class="col">
-            <div class="form-group">
-                <label>Tên trà</label>
-                <input type="text"
-                       class="form-control"
-                       name="Title"
-                       id="Title"
-                       value="@Model.TITLE"
-                       required
-                       oninput="setCustomValidity('')"
-                       oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
-            </div>
-            <div class="form-group">
-                <label>Giá tiền</label>
-                <input type="number"
-                       class="form-control"
-                       name="Price"
-                       id="Price"
-                       value="@Model.PRICE"
-                       required
-                       oninput="setCustomValidity('')"
-                       oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
-            </div>
-            <div class="form-group">
-                <label>Thể loại</label>
-                @Html.DropDownList("idCategory", new SelectList(ViewBag.listCategories, "ID", "Name"), htmlAttributes: new { @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label>Mô tả</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Description"
-                          id="Description"
-                          rows="5">@Model.DESCRIPTION</textarea>
-            </div>
-            <div class="form-group">
-                <label>Câu chuyện cảm hứng</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Story"
-                          id="Story"
-                          rows="5">@Model.STORY</textarea>
-            </div>
-            <div class="form-group">
-                <label>Thành phần</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Ingredient"
-                          id="Ingredient"
-                          rows="5">@Model.INGREDIENT</textarea>
-            </div>
-            <div class="form-group">
-                <label>Công dụng</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Function"
-                          id="Function"
-                          rows="5">@Model.FUNCTION</textarea>
-            </div>
-            <div class="form-group">
-                <label>Hàm lượng Caffeine</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Caffein"
-                          id="Caffein">@Model.CAFFEIN</textarea>
-            </div>
-            <div class="form-group">
-                <label>Khối lượng</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Weight"
-                          id="Weight">@Model.WEIGHT</textarea>
-            </div>
-            <div class="form-group">
-                <label>Hướng dẫn sử dụng</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Use"
-                          id="Use"
-                          rows="5">@Model.USE</textarea>
-            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Tên trà</label>
+                    <input type="text"
+                           class="form-control"
+                           name="Title"
+                           id="Title"
+                           value="@Model.TITLE"
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
+                </div>
+                <div class="form-group">
+                    <label>Giá tiền</label>
+                    <input type="number"
+                           class="form-control"
+                           name="Price"
+                           id="Price"
+                           value="@Model.PRICE"
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
+                </div>
+                <div class="form-group">
+                    <label>Số lượng</label>
+                    <input type="number"
+                           class="form-control"
+                           name="Amount"
+                           id="Amount"
+                           value="@Model.AMOUNT"
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
+                </div>
+                <div class="form-group">
+                    <label>Thể loại</label>
+                    <input type="text" id="idCateName" value="@Model.ID_CATEGORY" hidden />
+                    @Html.DropDownList("idCategory", new SelectList(ViewBag.listCategories, "ID", "NAME"), htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Description"
+                              id="Description"
+                              rows="5">@Model.DESCRIPTION</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Câu chuyện cảm hứng</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Story"
+                              id="Story"
+                              rows="5">@Model.STORY</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Thành phần</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Ingredient"
+                              id="Ingredient"
+                              rows="5">@Model.INGREDIENT</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Công dụng</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Function"
+                              id="Function"
+                              rows="5">@Model.FUNCTION</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Hàm lượng Caffeine</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Caffein"
+                              id="Caffein">@Model.CAFFEIN</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Khối lượng</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Weight"
+                              id="Weight">@Model.WEIGHT</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Hướng dẫn sử dụng</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Use"
+                              id="Use"
+                              rows="5">@Model.USE</textarea>
+                </div>
 
-            <button type="submit" id="button_push" class="btn btn-light col p-3" style="background-color:#00B38F;color:white;">Cập nhật thông tin</button>
+                <button type="submit" id="button_push" class="btn btn-light col p-3" style="background-color:#00B38F;color:white;">Cập nhật thông tin</button>
 
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
+
 <script>
 
+    $("input.form-control[type='number']").on("change paste keyup", function () {
+        let value = $(this).val()
+        let minValue = 0
+        if (value == "") {
+            value = minValue
+        }
+        else {
+            value = Math.max(minValue, parseInt(value))
+            $(this)[0].setCustomValidity('')
+        }
+        $(this).val(value)
+    });
+
+    $("input.form-control#Price").on("change paste keyup", function () {
+        let value = $(this).val().split(".").join('')
+        let minValue = 0
+        if (value == "") {
+            value = minValue
+        }
+        else {
+            value = Math.max(minValue, parseInt(value))
+            $(this)[0].setCustomValidity('')
+        }
+        $(this).val(value.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }).replace("VND", "").trim())
+    });
+
+    let getCategoryName = () => {
+        var id = $("#idCateName").val()
+        $("#idCategory").val(id)
+    }
+    getCategoryName()
+
+    let newOrder;
+    $("#images").sortable({
+        update: function (event, ui) {
+            newOrder = ui.item.index() + 1;
+            //for (let i = 1; i < $("#images input").length; i = i + 2) {
+            //    let img = $($("#images input")[i]).val()
+            //}
+            let oldOrder = $($("#images input")[2 * newOrder - 1]).val()
+            let idIMG = $("#id_tea").val()
+            callAPIchangeOrder(oldOrder, newOrder, idIMG)
+        }
+    });
+
+    let callAPIchangeOrder = (oldOrder, newOrder, id) => {
+        $.ajax({
+            type: "POST",
+            url: `/Admin/changeImageOrder`,
+            data: { oldOrder, newOrder, id },
+            success: data => { }
+        });
+    }
+
+    let onInputValid = id => {
+        let value = $("#" + id).val() + ""
+        if (value == "") {
+            $("#" + id).val($("#" + id).attr("min"))
+        }
+        else {
+            $("#" + id).val(parseInt(value))
+            $("#" + id)[0].setCustomValidity('')
+        }
+    }
     const goBack = () => {
         if (document.referrer.includes("Edit")) {
-            window.location.href = '/Admin/Order'
+            window.location.hreIDf = '/Admin/Tea'
         } else {
             history.back()
         }
     }
+
 
     let listImg = []
 
@@ -151,7 +237,7 @@
     let oldId = -1
     const onFocusImg = (id) => {
         $("#imgVoTra_" + id).css('opacity', 0.3);
-        $("#imgVoTra_" + id).css('border', '2px solid #00B38F')
+        $("#imgVoTra_" + id).css('border', '2px solid #ee4d2d')
         $("#icDelete_" + id).removeAttr('hidden');
         oldId = id
     }
@@ -185,6 +271,9 @@
         }
         setFileInput()
     }
+
+
+
 </script>
 
 <script>
@@ -197,10 +286,12 @@
 
                 let reader = new FileReader();
                 reader.onload = function (e) {
-                    $("#images").append(`<div onclick="deleteImage('${imgCount}')" class="m-3" style="position: relative; display: inline-block;" id="divVoTra_${imgCount}" onmouseover="onFocusImg('${imgCount}')" onmouseout="onBlurImg()">
-    <img id="imgVoTra_${imgCount}" style="height:250px;width:250px;object-fit:contain;text-align:center;" />
-    <div style="position: absolute; top: 100px; left: 100px; height: 100%; width: 100%; z-index: 2;"><img hidden='hidden' id="icDelete_${imgCount}" style="height:50px;width:50px;object-fit:contain;" src="/Content/Icon/ic_delete.png" /></div>
-</div>`)
+                    $("#images").append(`
+                        <div onclick="deleteImage('${imgCount}')" class="m-3" style="position: relative; display: inline-block;" id="divVoTra_${imgCount}" onmouseover="onFocusImg('${imgCount}')" onmouseout="onBlurImg()">
+                            <img id="imgVoTra_${imgCount}" style="height:250px;width:250px;object-fit:contain;text-align:center;" />
+                            <div style="position: absolute; top: 100px; left: 100px; height: 100%; width: 100%; z-index: 2;"><img hidden='hidden' id="icDelete_${imgCount}" style="height:50px;width:50px;object-fit:contain;" src="/Content/Icon/ic_delete.png" /></div>
+                        </div>
+                    `)
                     $('#imgVoTra_' + imgCount).attr('src', e.target.result);
                     listImg.push({
                         id: imgCount,

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Thêm đầu sách";
+    ViewBag.Title = "Thêm trà";
     ViewBag.MessageForValid = "Vui lòng nhập đủ thông tin";
     Layout = "~/Views/Admin/Shared/_Layout.cshtml";
 }
@@ -8,118 +8,139 @@
 
 <br />
 <br />
-<form class="form-horizontal ml-2" method="post" action="/Admin/AddTea" enctype="multipart/form-data">
-    <div class="row ml-2">
-        <div onclick="goBack()" style="cursor:pointer">
-            <ion-icon style="font-size:25px;color:#00B38F;margin-top:5px;margin-right:10px" name="arrow-back-circle-outline"></ion-icon>
+<div class="container">
+    <form class="form-horizontal ml-2" method="post" action="/Admin/AddTea" enctype="multipart/form-data">
+        <div class="row ml-2">
+            <div onclick="goBack()" style="cursor:pointer">
+                <ion-icon style="font-size:25px;color:#00B38F;margin-top:5px;margin-right:10px" name="arrow-back-circle-outline"></ion-icon>
+            </div>
+            <h4>Thêm thông tin</h4>
         </div>
-        <h4>Thêm thông tin</h4>
-    </div>
-    <hr />
-    <p>
-        <h5>Ảnh trà</h5>
-    </p>
-    <div style="display:flex;flex:1">
-        <div class="m-3">
-            <label for="file-input">
-                <img src="https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png" id="imgVoTra" style="height:250px;width:150px;object-fit:contain;text-align:center;" />
-            </label>
-            <input id="file-input" name="Images" type="file" hidden multiple accept="image/*" onchange="OnAddImage()" required" />
+        <hr />
+        <p>
+            <h5>Ảnh trà</h5>
+        </p>
+        <div style="display:flex;flex:1">
+            <div class="m-3">
+                <label for="file-input">
+                    <img src="https://cdn.pixabay.com/photo/2017/11/10/05/24/add-2935429_960_720.png" id="imgVoTra" style="height:250px;width:150px;object-fit:contain;text-align:center;" />
+                </label>
+                <input id="file-input" name="Images" type="file" hidden multiple accept="image/*" onchange="OnAddImage()" required" />
+            </div>
+            <div id="images" style="overflow-x:auto;height:300px;flex-direction:row;display:flex;overflow-y:hidden" onchange="alert('ahihi')">
+            </div>
         </div>
-        <div id="images" style="overflow-x:auto;height:300px;flex-direction:row;display:flex;overflow-y:hidden" onchange="alert('ahihi')">
-        </div>
-    </div>
-    <div class="col">
         <div class="col">
-            <div class="form-group">
-                <label>Tên trà</label>
-                <input type="text"
-                       class="form-control"
-                       name="Title"
-                       id="Title"
-                       required
-                       oninput="setCustomValidity('')"
-                       oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
-            </div>
-            <div class="form-group">
-                <label>Giá tiền</label>
-                <input type="number"
-                       class="form-control"
-                       name="Price"
-                       id="Price"
-                       required
-                       oninput="setCustomValidity('')"
-                       oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
-            </div>
-            <div class="form-group">
-                <label>Thể loại</label>
-                @Html.DropDownList("idCategory", new SelectList(ViewBag.listCategories, "ID", "Name"), htmlAttributes: new { @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label>Mô tả</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Description"
-                          id="Description"
-                          rows="5"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Câu chuyện cảm hứng</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Story"
-                          id="Story"
-                          rows="5"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Thành phần</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Ingredient"
-                          id="Ingredient"
-                          rows="5"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Công dụng</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Function"
-                          id="Function"
-                          rows="5"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Hàm lượng Caffeine</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Caffein"
-                          id="Caffein"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Khối lượng</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Weight"
-                          id="Weight"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Hướng dẫn sử dụng</label>
-                <textarea type="text"
-                          class="form-control"
-                          name="Use"
-                          id="Use"
-                          rows="5"></textarea>
-            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label>Tên trà</label>
+                    <input type="text"
+                           class="form-control"
+                           name="Title"
+                           id="Title"
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
+                </div>
+                <div class="form-group">
+                    <label>Giá tiền</label>
+                    <input type="number"
+                           class="form-control"
+                           name="Price"
+                           id="Price"
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
+                </div>
+                <div class="form-group">
+                    <label>Số lượng</label>
+                    <input type="number"
+                           class="form-control"
+                           name="Amount"
+                           id="Amount"
+                           required
+                           oninput="setCustomValidity('')"
+                           oninvalid="this.setCustomValidity('@ViewBag.MessageForValid')" />
+                </div>
+                <div class="form-group">
+                    <label>Thể loại</label>
+                    @Html.DropDownList("idCategory", new SelectList(ViewBag.listCategories, "ID", "NAME"), htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Description"
+                              id="Description"
+                              rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Câu chuyện cảm hứng</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Story"
+                              id="Story"
+                              rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Thành phần</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Ingredient"
+                              id="Ingredient"
+                              rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Công dụng</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Function"
+                              id="Function"
+                              rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Hàm lượng Caffeine</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Caffein"
+                              id="Caffein"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Khối lượng</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Weight"
+                              id="Weight"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Hướng dẫn sử dụng</label>
+                    <textarea type="text"
+                              class="form-control"
+                              name="Use"
+                              id="Use"
+                              rows="5"></textarea>
+                </div>
 
-            <button type="submit" id="button_push" class="btn btn-light col p-3" style="background-color:#00B38F;color:white;">Thêm đầu sách</button>
+                <button type="submit" id="button_push" class="btn btn-light col p-3" style="background-color:#00B38F;color:white;">Thêm trà</button>
 
+            </div>
         </div>
-    </div>
 
-
-
-
-</form>
+    </form>
+</div>
 <script>
+    $("input.form-control[type='number']").on("change paste keyup", function () {
+        let value = $(this).val()
+        let minValue = 0
+        if (value == "") {
+            value = minValue
+        }
+        else {
+            value = Math.max(minValue, parseInt(value))
+            $(this)[0].setCustomValidity('')
+        }
+        $(this).val(value)
+    });
 
     const goBack = () => {
         if (document.referrer.includes("Edit")) {

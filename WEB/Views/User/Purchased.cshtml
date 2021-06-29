@@ -7,8 +7,55 @@
 
     ViewBag.Title = "Teader";
     Layout = "~/Views/User/_LayoutUser.cshtml";
-}
 
+}
+<head>
+    <style>
+
+
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+
+            .rate:not(:checked) > input {
+                position: absolute;
+                top: -9999px;
+            }
+
+            .rate:not(:checked) > label {
+                float: right;
+                width: 1em;
+                overflow: hidden;
+                white-space: nowrap;
+                cursor: pointer;
+                font-size: 30px;
+                color: #ccc;
+            }
+
+                .rate:not(:checked) > label:before {
+                    content: '★ ';
+                }
+
+            .rate > input:checked ~ label {
+                color: #ffc700;
+            }
+
+            .rate:not(:checked) > label:hover,
+            .rate:not(:checked) > label:hover ~ label {
+                color: #deb217;
+            }
+
+            .rate > input:checked + label:hover,
+            .rate > input:checked + label:hover ~ label,
+            .rate > input:checked ~ label:hover,
+            .rate > input:checked ~ label:hover ~ label,
+            .rate > label:hover ~ input:checked ~ label {
+                color: #c59b08;
+            }
+    </style>
+</head>
 <div style="flex:1;background-color:#f5f5f5;padding:10px;border-radius:10px">
     <div style="display:flex;flex:1">
         <div class="list-group" id="list-tab" style="flex-direction: row;flex:1" role="tablist">
@@ -25,56 +72,153 @@
     <div style="display:flex;flex:1;">
         <div class="tab-content" style="flex:1;" id="nav-tabContent">
             <div class="tab-pane fade active show" id="processing" role="tabpanel">
+                @if (processingOrders.Count() > 0)
+                {
+                    <ul class="list-group">
 
-                <ul class="list-group">
-                    @foreach (var item in processingOrders)
-                    {
-
-                        <li class="list-group-item list-group-item-action" data-toggle="collapse" data-target=".detail_@item.ID">
-                            <h5>@item.CLIENT_NAME</h5>
-                            <strong>@item.SHIPPER</strong>
-                            <p>@addresses.Where(x => x.ID == item.ID_ADDRESS).ToList().First().ADDRESS1</p>
-                            <h6 class="text-right" style="color:#ee2d4d;">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.TOTAL_PRICE) VND</h6>
-                        </li>
-                        foreach (var tea in item.ORDER_DETAIL.ToList())
+                        @foreach (var item in processingOrders)
                         {
-                            <li class="list-group-item list-group-item-action collapse detail_@item.ID">
-                                <img src="@tea.TEA.IMAGEs.First().URL" style="width:80px; height:80px;" />
-                                <strong>@tea.TEA.TITLE</strong>
 
-                                <p align="right">Số lượng: @tea.AMOUNT</p>
+                            <li class="list-group-item list-group-item-action" data-toggle="collapse" data-target=".detail_@item.ID">
+                                <h5>@item.CLIENT_NAME</h5>
+                                <strong>@item.SHIPPER</strong>
+                                <p>@addresses.Where(x => x.ID == item.ID_ADDRESS).ToList().First().ADDRESS1</p>
+                                <h6 class="text-right" style="color:#ee2d4d;">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.TOTAL_PRICE) VND</h6>
                             </li>
+                            foreach (var tea in item.ORDER_DETAIL.ToList())
+                            {
+                                <li class="list-group-item list-group-item-action collapse detail_@item.ID">
+                                    <img src="@tea.TEA.IMAGEs.First().URL" style="width:80px; height:80px;" />
+                                    <strong>@tea.TEA.TITLE</strong>
 
+                                    <p align="right">Số lượng: @tea.AMOUNT</p>
+                                </li>
+
+                            }
                         }
-                    }
-                </ul>
+
+                    </ul>
+                }
+                else
+                {
+                    <div style="text-align:center;margin-top:100px;margin-bottom:100px" class="col">
+                        <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/4122b759f91bd8dce310f1bc691e78ad.png">
+                        <div class="product-not-exist__text">Không tìm thấy đơn hàng</div>
+                    </div>
+                }
             </div>
             <div class="tab-pane fade" id="deliveried" role="tabpanel">
+                @if (doneOrders.Count() > 0)
+                {
+                    <ul class="list-group">
 
-                <ul class="list-group">
-                    @foreach (var item in doneOrders)
-                    {
-                        <li class="list-group-item list-group-item-action" data-toggle="collapse" data-target=".detail_@item.ID">
-                            <h5>@item.CLIENT_NAME</h5>
-                            <strong>@item.SHIPPER</strong>
-                            <p>@addresses.Where(x => x.ID == item.ID_ADDRESS).ToList().First().ADDRESS1</p>
-                            <h6 class="text-right" style="color:#ee2d4d;">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.TOTAL_PRICE) VND</h6>
-                        </li>
-
-                        foreach (var tea in item.ORDER_DETAIL.ToList())
+                        @foreach (var item in doneOrders)
                         {
-                            <li class="list-group-item list-group-item-action collapse detail_@item.ID">
-                                <img src="@tea.TEA.IMAGEs.First().URL" style="width:80px; height:80px;" />
-                                <strong>@tea.TEA.TITLE</strong>
+                            <li class="list-group-item list-group-item-action" data-toggle="collapse" data-target=".detail_@item.ID">
 
-                                <p align="right">Số lượng: @tea.AMOUNT</p>
+                                <h5>@item.CLIENT_NAME</h5>
+                                <strong>@item.SHIPPER</strong>
+                                <p>@addresses.Where(x => x.ID == item.ID_ADDRESS).ToList().First().ADDRESS1</p>
+                                <h6 class="text-right" style="color:#ee2d4d;">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:N0}", item.TOTAL_PRICE) VND</h6>
+
                             </li>
 
+                            foreach (var tea in item.ORDER_DETAIL.ToList())
+                            {
+
+                                <li class="list-group-item list-group-item-action collapse detail_@item.ID" id="tea_@tea.ID">
+                                    <img src="@tea.TEA.IMAGEs.First().URL" style="width:80px; height:80px;" />
+                                    <a href="/Home/Detail?id=@tea.TEA.ID">
+                                    <strong>@tea.TEA.TITLE</strong>
+                                    </a>
+
+                                    <p align="right">Số lượng: @tea.AMOUNT</p>
+                                    @*Star Rating*@
+                                    <div class="rate" onchange="getStar(@tea.ID_TEA, @tea.ID); showComment()">
+                                        <input type="radio" id="star5_@tea.ID" name="rate_@tea.ID" value="5" />
+                                        <label for="star5_@tea.ID" title="Xuất sắc">5 stars</label>
+                                        <input type="radio" id="star4_@tea.ID" name="rate_@tea.ID" value="4" />
+                                        <label for="star4_@tea.ID" title="Tốt">4 stars</label>
+                                        <input type="radio" id="star3_@tea.ID" name="rate_@tea.ID" value="3" />
+                                        <label for="star3_@tea.ID" title="Bình thường">3 stars</label>
+                                        <input type="radio" id="star2_@tea.ID" name="rate_@tea.ID" value="2" />
+                                        <label for="star2_@tea.ID" title="Không ổn">2 stars</label>
+                                        <input type="radio" id="star1_@tea.ID" name="rate_@tea.ID" value="1" />
+                                        <label for="star1_@tea.ID" title="Tệ">1 star</label>
+                                    </div>
+
+                                    @*End Star Rating*@
+                                    <br />
+                                    <div class="d-flex justify-content-center">
+                                        <button class="btn btn-light" id="show-comment-@tea.ID" data-toggle="collapse" data-target="#comment-form-@tea.ID" style="width:400%; margin-right: 100px;" disabled>
+                                            Vui lòng vote để có thể bình luận
+                                        </button>
+                                    </div>
+                                    <div class="form-group collapse" style="margin-top:20px;" id="comment-form-@tea.ID">
+
+                                        <input type="text" class="form-control" id="comment_@tea.ID" placeholder="Viết bình luận..." height="35" />
+                                        <button class="btn btn-success submit-comment" style="margin-top:5px; float:right; color:white;" onclick="getComment(@tea.ID_TEA, @tea.ID); hideComment(@tea.ID)" >Xác nhận</button>
+                                    </div>
+                            @*Get Rated data*@
+                                    @{
+                                        var Rated = tea.TEA.RATEs.Where(x => x.ID_USER == Model.ID).ToList();
+                                    }
+                                    @if (Rated.Count() > 0)
+                                    {
+                                        <img class="call-rated" onerror="Rated(@tea.ID, @Rated.First().RATE1, '@Rated.First().COMMENT')" src="" style="display:none">
+                                    }
+                                </li>
+
+                            }
                         }
-                    }
-                </ul>
+
+                    </ul>
+                }
+                else
+                {
+                    <div style="text-align:center;margin-top:100px;margin-bottom:100px" class="col">
+                        <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/4122b759f91bd8dce310f1bc691e78ad.png">
+                        <div class="product-not-exist__text">
+                            Không tìm thấy đơn hàng
+                        </div>
+                    </div>
+                }
             </div>
 
         </div>
     </div>
 </div>
+
+<script>
+    let getStar = (idTea, idDetail) => {
+        star = $('#tea_' + idDetail + ' input:checked').val();
+        $('#show-comment-' + idDetail).removeAttr('disabled');
+        $('#show-comment-' + idDetail).text('Bình luận');
+        $.ajax({
+            type: "POST",
+            url: `/User/AddRating`,
+            data: { idTea, star },
+            success: data => { }
+        });
+        
+    }
+    let getComment = (idTea, idDetail) => {
+        let comment = $('#comment_' + idDetail).val();
+        $.ajax({
+            type: "POST",
+            url: `/User/AddComment`,
+            data: { idTea, comment },
+            success: data => { }
+        });
+    }
+    let Rated = (idDetail, star, comment) => {
+        $('#star' + star + '_' + idDetail).attr('checked', 'checked');
+        $('#comment_' + idDetail).val(comment);
+        $('#show-comment-' + idDetail).removeAttr('disabled');
+        $('#show-comment-' + idDetail).text('Bình luận');
+    }
+    let hideComment = (idTea) => {
+        $('#comment-form-' + idTea).hide(500)
+    }
+    
+</script>

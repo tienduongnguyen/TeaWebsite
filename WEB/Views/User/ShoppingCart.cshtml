@@ -18,6 +18,15 @@
                 <div class="pt-4 wish-list">
 
                     <h5 class="mb-4">Giỏ (<span>@Model.Count()</span> mặt hàng)</h5>
+
+                    @if (Model.Count() == 0)
+                    {
+                        <div style="text-align:center;margin-top:100px;margin-bottom:100px" class="col">
+                            <img src="https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/4122b759f91bd8dce310f1bc691e78ad.png">
+                            <div class="product-not-exist__text">Không tìm thấy sản phẩm</div>
+                        </div>
+                    }
+
                     @foreach (var item in Model)
                     {
                         <div class="row mb-4">
@@ -27,7 +36,7 @@
                             <div class="col-md-5 col-lg-3 col-xl-3">
                                 <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
                                     <img class="img-fluid w-100"
-                                         src="@item.TEA.IMAGEs.First().URL" alt="Ảnh của 1 cuốn sách">
+                                         src="@item.TEA.IMAGEs.First().URL" alt="Ảnh của trà">
                                 </div>
                             </div>
                             <div class="col-md-6 col-lg-8 col-xl-8">
@@ -189,11 +198,11 @@
         callAPIQuantity(id, $("#inputQuantity_" + id).val())
     }
 
-    let callAPIQuantity = (idCart, quantity) => {
+    let callAPIQuantity = (idCart, amount) => {
         $.ajax({
             type: "POST",
             url: `/User/ChangeAmount`,
-            data: { idCart, quantity },
+            data: { idCart, amount },
             success: data => { }
         });
     }

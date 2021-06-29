@@ -14,7 +14,7 @@
 
 <form action="?" class="pt-1 pb-4 container">
     <div class="input-group">
-        <input name="text" type="text" class="form-control" placeholder="Tìm kiếm sách" value="@ViewBag.TextSearch" />
+        <input name="text" type="text" class="form-control" placeholder="Tìm kiếm trà" value="@ViewBag.TextSearch" />
         <button class="btn btn-solid-primary btn-light" style="color:white;background-color:#00B38F;" type="submit">
             <ion-icon style="font-size:15px" name="search"></ion-icon>
         </button>
@@ -29,12 +29,12 @@
                 Giá
             </h5>
             <label>Từ</label>
-            <input type="number" class="form-control price" value="@ViewBag.PriceFrom" />
+            <input type="number" class="form-control price" value="@ViewBag.PriceFrom" style="max-width:180px;" />
             <label>Đến</label>
-            <input type="number" class="form-control price" value="@ViewBag.PriceTo" />
+            <input type="number" class="form-control price" value="@ViewBag.PriceTo" style="max-width:180px;" />
             <p>
                 <a href="#" onclick="getUrl({ priceFrom: $('.form-control.price')[0].value, priceTo:$('.form-control.price')[1].value })"
-                   class="btn btn-light mt-1" style="background-color:#00B38F;color:white">
+                   class="btn btn-light mt-1 confirm-price" style="">
                     Xác nhận
                 </a>
             </p>
@@ -59,7 +59,7 @@
             }
         </div>
     </div>
-    <div style="background-color:#f5f5f5;width:15px"></div>
+    <div style="background-color:#00B38F;width:5px"></div>
     <div style="flex:4;margin-left:15px">
         <div class="row col">
             <div class="mt-1">Sắp xếp theo</div>
@@ -68,21 +68,10 @@
                     <span>@ViewBag.TextSort</span>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 0 })">@taka.Utils.C.DROPDOWN_SORT.NEWEST</a>
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 1 })">@taka.Utils.C.DROPDOWN_SORT.OLDEST</a>
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 2 })">@taka.Utils.C.DROPDOWN_SORT.LOWEST_PRICE</a>
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 3 })">@taka.Utils.C.DROPDOWN_SORT.HIGHEST_PRICE</a>
-                </div>
-            </div>
-
-            <div class="dropdown ml-3">
-                <button class="btn dropdown-toggle" type="button" id="dropdownPageSize" data-toggle="dropdown">
-                    <span>@ViewBag.PageSize sản phẩm</span>
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 10 })">16 sản phẩm</a>
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 32 })">32 sản phẩm</a>
-                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, pageSize: 64 })">64 sản phẩm</a>
+                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 1 })">@taka.Utils.C.DROPDOWN_SORT.HIGHEST_AMOUNT</a>
+                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 2 })">@taka.Utils.C.DROPDOWN_SORT.LOWEST_AMOUNT</a>
+                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 3 })">@taka.Utils.C.DROPDOWN_SORT.LOWEST_PRICE</a>
+                    <a class="dropdown-item" href="#" onclick="getUrl({ page: 1, sort: 4 })">@taka.Utils.C.DROPDOWN_SORT.HIGHEST_PRICE</a>
                 </div>
             </div>
 
@@ -130,7 +119,7 @@
                 <div id="root_@item.ID" style="margin:10px; flex:1;flex-direction:row;display:flex; border: 1px solid white;padding:10px;text-decoration:none"
                      onmousemove="onMoveMouseItem('root_@item.ID')" onmouseout="onMoveOutMouseOfItem('root_@item.ID')">
                     <a href="/Admin/Edit?id=@item.ID">
-                        <img src="@item.IMAGEs.First().URL" style="width:100px;height:100px ;object-fit:contain" />
+                        <img src="@item.IMAGEs.OrderBy(x => x.ORDER).First().URL" style="width:100px;height:100px ;object-fit:contain" />
                     </a>
                     <b class="title-tea">
                         @item.TITLE
@@ -222,11 +211,9 @@
         cate = '@ViewBag.Cate',
         sort = '@ViewBag.Sort',
         pageSize = '@ViewBag.PageSize',
-        type = '@ViewBag.Type',
-        language = '@ViewBag.Language',
         priceFrom = '@ViewBag.PriceFrom',
         priceTo = '@ViewBag.PriceTo' }) => {
-        let url = `?page=${page}&text=${text}&cate=${cate}&sort=${sort}&pageSize=${pageSize}&type=${type}&language=${language}&priceFrom=${priceFrom}&priceTo=${priceTo}`
+        let url = `?page=${page}&text=${text}&cate=${cate}&sort=${sort}&pageSize=${pageSize}&priceFrom=${priceFrom}&priceTo=${priceTo}`
         window.location.href = url
     }
 </script>
