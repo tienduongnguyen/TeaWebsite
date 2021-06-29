@@ -12,6 +12,7 @@ namespace taka.Models.DatabaseInteractive
 {
     public class BillItem
     {
+        //viet duc da o day
         public int id { get; set; }
         public string teaName { get; set; }
         public int price { get; set; }
