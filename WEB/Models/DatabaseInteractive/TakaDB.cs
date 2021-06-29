@@ -47,9 +47,6 @@ namespace taka.Models.DatabaseInteractive
             if (cate != 0)
                 listItem = listItem.Where(m => m.ID_CATEGORY == cate);
 
-
-
-
             if (priceTo > 0)
                 listItem = listItem.Where(m => (m.PRICE > priceFrom && m.PRICE < priceTo));
             else if (priceFrom > 0)
@@ -196,6 +193,7 @@ namespace taka.Models.DatabaseInteractive
                 return user.First();
             return null;
         }
+        // đã hoàn thành nhưng gg ko chấp nhận
         public USER LoginWithGoogle(string gooogleId, string fullname, string email)
         {
             var user = takaDB.USERs.Where(x => x.GOOGLE_ID == gooogleId);
